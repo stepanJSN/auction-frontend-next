@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   ICard,
@@ -6,7 +7,7 @@ import {
 } from '../interfaces/cards.interface';
 
 export const cardsService = {
-  getAll: async ({
+  getAll: cache(async ({
     page,
     onlyUserCards = false,
     name,
@@ -23,12 +24,12 @@ export const cardsService = {
       params,
     });
     return cards.data;
-  },
+  }),
 
-  getOne: async (id: string) => {
+  getOne: cache(async (id: string) => {
     const card = await apiWithAuth.get<ICard>(`/cards/${id}`);
     return card.data;
-  },
+  }),
 
   create: async (data: ICreateCard, image: Blob) => {
     const formData = new FormData();

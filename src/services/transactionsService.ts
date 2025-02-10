@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import { IBalance } from '../interfaces/user.interfaces';
 
@@ -14,10 +15,10 @@ export const transactionsService = {
     });
     return balance.data;
   },
-  getFeeAmount: async () => {
+  getFeeAmount: cache(async () => {
     const fee = await apiWithAuth.get<{ totalFeeAmount: number }>(
       '/transactions/fee',
     );
     return fee.data;
-  },
+  }),
 };

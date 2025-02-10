@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   AuctionTypeEnum,
@@ -14,7 +15,7 @@ export const auctionService = {
     await apiWithAuth.post('/auctions', data);
   },
 
-  findAll: async (payload: IGetAuctionsPayload) => {
+  findAll: cache(async (payload: IGetAuctionsPayload) => {
     const params = new URLSearchParams();
     if (payload.page) params.append('page', payload.page.toString());
     if (payload.locationId)
@@ -41,19 +42,19 @@ export const auctionService = {
       params,
     });
     return auctions.data;
-  },
+  }),
 
-  findPriceRange: async () => {
+  findPriceRange: cache(async () => {
     const priceRange = await apiWithAuth.get<IPriceRange>(
       '/auctions/priceRange',
     );
     return priceRange.data;
-  },
+  }),
 
-  findOne: async (id: string) => {
+  findOne: cache(async (id: string) => {
     const auction = await apiWithAuth.get<IAuction>(`/auctions/${id}`);
     return auction.data;
-  },
+  }),
 
   update: async (id: string, data: IUpdateAuction) => {
     await apiWithAuth.patch(`/auctions/${id}`, data);

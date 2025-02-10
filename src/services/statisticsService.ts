@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   ICardsStatisticsResponse,
@@ -7,14 +8,14 @@ import {
 } from '../interfaces/statistics.interfaces';
 
 export const statisticsService = {
-  findGeneralStatistics: async () => {
+  findGeneralStatistics: cache(async () => {
     const response = await apiWithAuth.get<IGeneralStatistics>(
       '/statistics/general',
     );
     return response.data;
-  },
+  }),
 
-  findUserStatistics: async (numberOfUsers?: number) => {
+  findUserStatistics: cache(async (numberOfUsers?: number) => {
     const params = new URLSearchParams();
     if (numberOfUsers) params.append('numberOfUsers', numberOfUsers.toString());
     const response = await apiWithAuth.get<IUsersStatistics[]>(
@@ -24,9 +25,9 @@ export const statisticsService = {
       },
     );
     return response.data;
-  },
+  }),
 
-  findCardsStatistics: async (page?: number) => {
+  findCardsStatistics: cache(async (page?: number) => {
     const params = new URLSearchParams();
     if (page) params.append('page', page.toString());
     const response = await apiWithAuth.get<ICardsStatisticsResponse>(
@@ -36,9 +37,9 @@ export const statisticsService = {
       },
     );
     return response.data;
-  },
+  }),
 
-  findSetsStatistics: async (page?: number) => {
+  findSetsStatistics: cache(async (page?: number) => {
     const params = new URLSearchParams();
     if (page) params.append('page', page.toString());
     const response = await apiWithAuth.get<ISetsStatisticsResponse>(
@@ -48,5 +49,5 @@ export const statisticsService = {
       },
     );
     return response.data;
-  },
+  }),
 };

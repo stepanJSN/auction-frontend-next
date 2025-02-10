@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   ICreateEpisode,
@@ -6,7 +7,7 @@ import {
 } from '../interfaces/episodes.interfaces';
 
 export const episodesService = {
-  getAll: async ({ page = 1, name }: { page?: number; name?: string }) => {
+  getAll: cache(async ({ page = 1, name }: { page?: number; name?: string }) => {
     const params = new URLSearchParams();
     params.append('page', page.toString());
     if (name) params.append('name', name);
@@ -14,7 +15,7 @@ export const episodesService = {
       params,
     });
     return episodes.data;
-  },
+  }),
 
   create: async (data: ICreateEpisode) => {
     const episode = await apiWithAuth.post<IEpisode>('/episodes', data);

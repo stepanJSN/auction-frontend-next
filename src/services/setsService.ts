@@ -1,22 +1,23 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import { ICreateSet, IGetSetsResponse, ISet } from '../interfaces/sets.interface';
 
 export const setsService = {
-  getAll: async (page: number) => {
+  getAll: cache(async (page: number) => {
     const params = new URLSearchParams();
     params.append('page', page.toString());
     const sets = await apiWithAuth.get<IGetSetsResponse>('/sets', {
       params,
     });
     return sets.data;
-  },
+  }),
 
-  getOne: async (id: string) => {
+  getOne: cache(async (id: string) => {
     const set = await apiWithAuth.get<Omit<ISet, 'is_user_has_set'>>(
       `/sets/${id}`,
     );
     return set.data;
-  },
+  }),
 
   create: async (data: ICreateSet) => {
     const set = await apiWithAuth.post<Omit<ISet, 'is_user_has_set'>>(

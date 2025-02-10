@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   IChat,
@@ -14,7 +15,7 @@ import {
 } from '../interfaces/message.interfaces';
 
 export const chatsService = {
-  findAll: async ({ page, name }: { page?: number; name?: string }) => {
+  findAll: cache(async ({ page, name }: { page?: number; name?: string }) => {
     const params = new URLSearchParams();
     if (page) params.append('page', page.toString());
     if (name) params.append('name', name);
@@ -22,14 +23,14 @@ export const chatsService = {
       params,
     });
     return chats.data;
-  },
+  }),
 
-  findOne: async (id: string) => {
+  findOne: cache(async (id: string) => {
     const chat = await apiWithAuth.get<IChat>(`/chats/${id}`);
     return chat.data;
-  },
+  }),
 
-  findAllMessages: async ({ id, cursor }: { cursor?: string; id: string }) => {
+  findAllMessages: cache(async ({ id, cursor }: { cursor?: string; id: string }) => {
     const params = new URLSearchParams();
     if (cursor) params.append('cursor', cursor);
     const chat = await apiWithAuth.get<IGetMessagesResponse>(
@@ -39,7 +40,7 @@ export const chatsService = {
       },
     );
     return chat.data;
-  },
+  }),
 
   create: async (data: ICreateChat) => {
     const chat = await apiWithAuth.post<ICreateChatResponse>('/chats', data);

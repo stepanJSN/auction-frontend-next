@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { apiWithAuth } from '../apiConfig';
 import {
   ICreateLocation,
@@ -6,7 +7,7 @@ import {
 } from '../interfaces/locations.interfaces';
 
 export const locationsService = {
-  getAll: async ({ page = 1, name }: { page?: number; name?: string }) => {
+  getAll: cache(async ({ page = 1, name }: { page?: number; name?: string }) => {
     const params = new URLSearchParams();
     params.append('page', page.toString());
     if (name) params.append('name', name);
@@ -17,7 +18,7 @@ export const locationsService = {
       },
     );
     return locations.data;
-  },
+  }),
 
   create: async (data: ICreateLocation) => {
     const location = await apiWithAuth.post<ILocation>('/locations', data);

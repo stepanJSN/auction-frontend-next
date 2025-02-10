@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { api, apiWithAuth } from '../apiConfig';
 import { Role } from '../enums/role.enum';
 import {
@@ -22,17 +23,17 @@ export const userService = {
     await apiWithAuth.patch(`/users/role`, { userId: id, role });
   },
 
-  getOne: async (id: string) => {
+  getOne: cache(async (id: string) => {
     const userData = await apiWithAuth.get<IUser>(`/users/${id}`);
     return userData.data;
-  },
+  }),
 
-  getCurrent: async () => {
+  getCurrent: cache(async () => {
     const userData = await apiWithAuth.get<IUser>('/users/current');
     return userData.data;
-  },
+  }),
 
-  getAll: async (payload: IGetUserPayload) => {
+  getAll: cache(async (payload: IGetUserPayload) => {
     const params = new URLSearchParams();
     if (payload.page) params.append('page', payload.page.toString());
     if (payload.sortType) params.append('sortType', payload.sortType);
@@ -43,7 +44,7 @@ export const userService = {
       params,
     });
     return users.data;
-  },
+  }),
 
   delete: async (id: string) => {
     await apiWithAuth.delete(`/users/${id}`);
