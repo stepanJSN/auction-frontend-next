@@ -1,3 +1,4 @@
+"use client"
 import {
   Typography,
   ToggleButtonGroup,
@@ -8,8 +9,8 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import { ROUTES } from '../config/routesConfig';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type FaqHeaderProps = {
   currentPage: string;
@@ -21,11 +22,13 @@ const containerStyles: SxProps = {
 };
 
 export default function FaqHeader({ currentPage }: FaqHeaderProps) {
+  const router = useRouter()
+
   const handleChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
-      redirect(newAlignment);
+      router.push(newAlignment);
     },
-    [],
+    [router],
   );
 
   return (
