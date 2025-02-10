@@ -1,7 +1,7 @@
 import Card from './Card';
 import { Gender } from '../enums/gender.enum';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../test-utils';
 
 describe('Card Component', () => {
   it('should render the component with data', () => {

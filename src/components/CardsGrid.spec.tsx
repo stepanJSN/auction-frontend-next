@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { Gender } from '../enums/gender.enum';
 import CardsGrid from './CardsGrid';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../test-utils';
 
 describe('CardsGrid Component', () => {
   it('should render the component with data', () => {
