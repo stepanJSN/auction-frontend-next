@@ -1,10 +1,10 @@
 import { io } from 'socket.io-client';
 import { authService } from './services/authService';
+import { SERVER_URL } from './constants/envConstants';
 
-const URL = import.meta.env.VITE_SERVER_URL;
 const accessToken = authService.getAccessToken();
 
-export const socket = io(URL, {
+export const socket = io(SERVER_URL, {
   auth: {
     token: `Bearer ${accessToken}`,
   },
