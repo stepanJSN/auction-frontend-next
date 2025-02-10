@@ -2,6 +2,9 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import { CssBaseline } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const RobotoFont = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -24,7 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${RobotoFont.className}`}>
         <AppRouterCacheProvider>
-          {children}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <CssBaseline />
+            {children}
+          </LocalizationProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
