@@ -1,9 +1,13 @@
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
 const RobotoFont = Roboto({
   weight: ["300", "400", "500", "700"],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto',
 });
 
 export const metadata: Metadata = {
@@ -19,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${RobotoFont.className}`}>
-        {children}
+        <AppRouterCacheProvider>
+          {children}
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
