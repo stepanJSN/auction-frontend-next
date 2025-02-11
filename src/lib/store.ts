@@ -9,8 +9,6 @@ const combinedReducer = combineReducers({
   user: userReducer,
 });
 
-sagaMiddleware.run(rootSaga);
-
 export const makeStore = () => {
   const store = configureStore({
     reducer: combinedReducer,
