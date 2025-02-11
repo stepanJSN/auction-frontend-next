@@ -54,8 +54,7 @@ apiWithAuth.interceptors.response.use(
 
     try {
       return await handleTokenRefresh(error);
-    } catch (tokenError) {
-      console.log(tokenError);
+    } catch {
       redirectToSignIn();
     }
 

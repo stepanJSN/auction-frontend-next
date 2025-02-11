@@ -14,7 +14,7 @@ import { MenuLink } from "./MenuLink";
 import Menu from "./Menu";
 import Link from "next/link";
 import { ROUTES } from "@/config/routesConfig";
-import { logoutAction } from "./logout.action";
+import { logoutAction } from "@/actions";
 
 type ProfileMenuProps = {
   isMenuOpen: boolean;
