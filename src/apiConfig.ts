@@ -1,14 +1,14 @@
-import axios, { AxiosError, type CreateAxiosDefaults } from 'axios';
-import { authService } from './services/authService';
-import { ROUTES } from './config/routesConfig';
-import { SERVER_URL } from './constants/envConstants';
-import { redirect } from 'next/navigation';
+import axios, { AxiosError, type CreateAxiosDefaults } from "axios";
+import { authService } from "./services/authService";
+import { ROUTES } from "./config/routesConfig";
+import { SERVER_URL } from "./constants/envConstants";
+import { getAccessToken, setAccessToken } from "./actions";
 
 const options: CreateAxiosDefaults = {
   baseURL: SERVER_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 };
 
@@ -16,7 +16,7 @@ const api = axios.create(options);
 const apiWithAuth = axios.create(options);
 
 const redirectToSignIn = () => {
-  redirect(ROUTES.SIGN_IN);
+  window.location.href = ROUTES.SIGN_IN;
 };
 
 async function handleTokenRefresh(error: AxiosError) {
@@ -26,7 +26,7 @@ async function handleTokenRefresh(error: AxiosError) {
     originalRequest._retry = true;
     const token = (await authService.getNewTokens()).accessToken;
     if (token) {
-      authService.setAccessToken(token);
+      await setAccessToken(token);
       originalRequest.headers.Authorization = `Bearer ${token}`;
       return apiWithAuth.request(originalRequest);
     }
@@ -36,7 +36,7 @@ async function handleTokenRefresh(error: AxiosError) {
 }
 
 apiWithAuth.interceptors.request.use(async (config) => {
-  const accessToken = authService.getAccessToken();
+  const accessToken = await getAccessToken();
 
   if (config?.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -55,6 +55,7 @@ apiWithAuth.interceptors.response.use(
     try {
       return await handleTokenRefresh(error);
     } catch (tokenError) {
+      console.log(tokenError);
       redirectToSignIn();
     }
 
