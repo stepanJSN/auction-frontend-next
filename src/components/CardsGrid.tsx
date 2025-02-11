@@ -1,6 +1,6 @@
-import { Grid2 } from '@mui/material';
-import Card from './Card';
-import { ICardSummary } from '../interfaces/cards.interface';
+import { Grid2 } from "@mui/material";
+import Card from "./Card";
+import { ICardSummary } from "../interfaces/cards.interface";
 
 type CardsGridProps = {
   cards: ICardSummary[];
