@@ -1,11 +1,11 @@
-import { Box, SxProps, Theme, Typography } from '@mui/material';
+import { Box, SxProps, Typography } from "@mui/material";
 
 const authContainerStyles: SxProps = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: '100vh',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "100vh",
   padding: 2,
 };
 
@@ -14,10 +14,14 @@ const titleStyles = {
     sx: 1,
     md: 2,
   },
-  textAlign: 'center',
+  textAlign: "center",
 };
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <Box sx={authContainerStyles}>
       <Typography variant="h4" sx={titleStyles}>

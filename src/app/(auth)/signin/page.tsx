@@ -1,8 +1,8 @@
-import { FormWrapper } from '@/components/FormWrapper';
-import AuthForm from './AuthForm';
-import { Typography } from '@mui/material';
-import FormLink from '@/components/FormLink';
-import { ROUTES } from '@/config/routesConfig';
+import { FormWrapper } from "@/components/FormWrapper";
+import AuthForm from "./AuthForm";
+import { Typography } from "@mui/material";
+import FormLink from "@/components/FormLink";
+import { ROUTES } from "@/config/routesConfig";
 
 export default function Signin() {
   return (

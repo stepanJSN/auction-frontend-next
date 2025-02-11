@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { ROUTES } from "@/config/routesConfig";
 import { ISingInRequest } from "@/interfaces/auth.interfaces";
