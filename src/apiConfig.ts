@@ -2,6 +2,7 @@ import axios, { AxiosError, type CreateAxiosDefaults } from 'axios';
 import { authService } from './services/authService';
 import { ROUTES } from './config/routesConfig';
 import { SERVER_URL } from './constants/envConstants';
+import { redirect } from 'next/navigation';
 
 const options: CreateAxiosDefaults = {
   baseURL: SERVER_URL,
@@ -15,7 +16,7 @@ const api = axios.create(options);
 const apiWithAuth = axios.create(options);
 
 const redirectToSignIn = () => {
-  window.location.href = ROUTES.SIGN_IN;
+  redirect(ROUTES.SIGN_IN);
 };
 
 async function handleTokenRefresh(error: AxiosError) {
