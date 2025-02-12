@@ -5,6 +5,7 @@ import {
   ICreateCard,
   IGetCardsResponse,
 } from "../interfaces/cards.interface";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 
 export const cardsService = {
   getAll: cache(
@@ -33,8 +34,12 @@ export const cardsService = {
   ),
 
   getOne: cache(async (id: string) => {
-    const card = await apiWithAuth.get<ICard>(`/cards/${id}`);
-    return card.data;
+    try {
+      const card = await apiWithAuth.get<ICard>(`/cards/${id}`);
+      return { data: card.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   create: async (data: ICreateCard, image: Blob) => {
