@@ -1,7 +1,6 @@
 import { cardsService } from "@/services/cardsService";
 import { ICardSummary } from "@/interfaces/cards.interface";
 import { Typography } from "@mui/material";
-import { ROUTES } from "@/config/routesConfig";
 import Pagination from "@/components/Pagination";
 import CardsGrid from "@/components/CardsGrid";
 import PageError from "@/components/PageError";
@@ -36,7 +35,6 @@ export default async function CardsData({ currentPage }: CardsDataProps) {
       <CardsGrid
         cards={data.data}
         cardActions={(card: ICardSummary) => <CardActions card={card} />}
-        cardPagePath={ROUTES.USER_CARDS_DETAILS}
       />
       <Pagination totalPages={data.info.totalPages} />
     </>

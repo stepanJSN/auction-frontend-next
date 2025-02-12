@@ -40,11 +40,7 @@ export default async function CardsData({ currentPage }: CardsDataProps) {
 
   return (
     <>
-      <CardsGrid
-        cards={data.data}
-        cardActions={cardActions}
-        cardPagePath={ROUTES.USER_CARDS_DETAILS}
-      />
+      <CardsGrid cards={data.data} cardActions={cardActions} />
       <Pagination totalPages={data.info.totalPages} />
     </>
   );

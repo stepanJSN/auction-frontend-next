@@ -12,10 +12,10 @@ import {
 import { ICardSummary } from "../interfaces/cards.interface";
 import { CardLabel } from "./CardLabel";
 import Link from "next/link";
+import { ROUTES } from "@/config/routesConfig";
 
 type CardProps = Omit<ICardSummary, "created_at" | "location_id"> & {
   children?: React.ReactNode;
-  cardPagePath: (cardId: string) => string;
 };
 
 const cardMediaStyles = {
@@ -36,7 +36,6 @@ export default function Card({
   is_owned,
   type,
   children,
-  cardPagePath,
 }: CardProps) {
   const cardStyles: SxProps = useMemo(
     () => ({
@@ -66,7 +65,7 @@ export default function Card({
           {type && <Typography variant="body1">Type: {type}</Typography>}
         </CardContent>
         <CardActions>
-          <Button component={Link} href={cardPagePath(id)} size="small">
+          <Button component={Link} href={ROUTES.CARD_DETAILS(id)} size="small">
             Learn More
           </Button>
           {children}
