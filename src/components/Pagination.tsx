@@ -1,26 +1,36 @@
-import { Stack, Pagination as MuiPagination, SxProps } from '@mui/material';
+"use client";
+import { Stack, Pagination as MuiPagination, SxProps } from "@mui/material";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type PaginationProps = {
-  currentPage: number;
   totalPages: number;
-  handleChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 };
 
 const paginationContainerStyles: SxProps = {
   mt: 2,
 };
 
-export default function Pagination({
-  currentPage,
-  totalPages,
-  handleChange,
-}: PaginationProps) {
+export default function Pagination({ totalPages }: PaginationProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const changePage = (
+    _event: React.ChangeEvent<unknown>,
+    pageNumber: number,
+  ) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNumber.toString());
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <Stack alignItems="center" sx={paginationContainerStyles}>
       <MuiPagination
         count={totalPages}
         page={currentPage}
-        onChange={handleChange}
+        onChange={changePage}
       />
     </Stack>
   );

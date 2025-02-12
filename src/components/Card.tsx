@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import {
   Button,
   CardActions,
@@ -8,22 +8,22 @@ import {
   Stack,
   SxProps,
   Typography,
-} from '@mui/material';
-import { ICardSummary } from '../interfaces/cards.interface';
-import { CardLabel } from './CardLabel';
-import Link from 'next/link';
+} from "@mui/material";
+import { ICardSummary } from "../interfaces/cards.interface";
+import { CardLabel } from "./CardLabel";
+import Link from "next/link";
 
-type CardProps = Omit<ICardSummary, 'created_at' | 'location_id'> & {
+type CardProps = Omit<ICardSummary, "created_at" | "location_id"> & {
   children?: React.ReactNode;
   cardPagePath: (cardId: string) => string;
 };
 
 const cardMediaStyles = {
-  height: '200px',
+  height: "200px",
 };
 
 const cardContentStyles = {
-  flex: 'auto',
+  flex: "auto",
 };
 
 export default function Card({
@@ -40,11 +40,11 @@ export default function Card({
 }: CardProps) {
   const cardStyles: SxProps = useMemo(
     () => ({
-      height: '100%',
-      backgroundColor: is_active ? '' : 'grey.300',
-      borderColor: 'success.main',
+      height: "100%",
+      backgroundColor: is_active ? "" : "grey.300",
+      borderColor: "success.main",
       borderWidth: is_owned ? 3 : 0,
-      borderStyle: 'solid',
+      borderStyle: "solid",
     }),
     [is_active, is_owned],
   );
