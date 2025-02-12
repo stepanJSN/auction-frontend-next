@@ -1,9 +1,9 @@
-import { LinkProps, SxProps } from '@mui/material';
-import Link from './Link';
+import { LinkProps, SxProps } from "@mui/material";
+import Link from "./Link";
 
 const linkStyles: SxProps = {
-  display: 'block',
-  textAlign: 'center',
+  display: "block",
+  textAlign: "center",
   mt: 1,
 };
 

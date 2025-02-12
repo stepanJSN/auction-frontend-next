@@ -1,6 +1,6 @@
 import { Stack, Typography, Button, SxProps } from "@mui/material";
 import { ROUTES } from "../../../config/routesConfig";
-import Link from "../../../components/Link";
+import Link from "next/link";
 
 const containerStyles: SxProps = {
   alignItems: "center",
