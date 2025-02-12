@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination";
 import CardsGrid from "@/components/CardsGrid";
 import PageError from "@/components/PageError";
 import CardActions from "./CardActions";
+import { notFound } from "next/navigation";
 
 type CardsDataProps = {
   currentPage: number;
@@ -18,6 +19,9 @@ export default async function CardsData({ currentPage }: CardsDataProps) {
 
   if (!data) {
     return <PageError />;
+  }
+  if (data.data.length === 0 && currentPage > 1) {
+    return notFound();
   }
   if (data.data.length === 0) {
     return (

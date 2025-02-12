@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Typography,
   ToggleButtonGroup,
@@ -6,11 +6,11 @@ import {
   SxProps,
   Button,
   Grid2,
-} from '@mui/material';
-import { useCallback } from 'react';
-import { ROUTES } from '../config/routesConfig';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+} from "@mui/material";
+import { useCallback } from "react";
+import { ROUTES } from "../config/routesConfig";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type FaqHeaderProps = {
   currentPage: string;
@@ -18,11 +18,11 @@ type FaqHeaderProps = {
 
 const containerStyles: SxProps = {
   mb: 2,
-  alignItems: 'center',
+  alignItems: "center",
 };
 
 export default function FaqHeader({ currentPage }: FaqHeaderProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
@@ -40,7 +40,8 @@ export default function FaqHeader({ currentPage }: FaqHeaderProps) {
         onChange={handleChange}
         size="small"
         exclusive
-        aria-label="FAQ">
+        aria-label="FAQ"
+      >
         <ToggleButton value={ROUTES.CARDS}>Cards</ToggleButton>
         <ToggleButton value={ROUTES.SETS}>Sets</ToggleButton>
       </ToggleButtonGroup>
@@ -49,8 +50,9 @@ export default function FaqHeader({ currentPage }: FaqHeaderProps) {
         href={
           currentPage === ROUTES.CARDS ? ROUTES.CREATE_CARD : ROUTES.CREATE_SET
         }
-        variant="outlined">
-        {currentPage === ROUTES.CARDS ? 'Create card' : 'Create set'}
+        variant="outlined"
+      >
+        {currentPage === ROUTES.CARDS ? "Create card" : "Create set"}
       </Button>
     </Grid2>
   );
