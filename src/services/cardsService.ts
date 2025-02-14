@@ -30,7 +30,7 @@ export const cardsService = {
         });
         return { data: cards.data, status: QueryStatusEnum.SUCCESS };
       } catch {
-        return { success: QueryStatusEnum.ERROR };
+        return { status: QueryStatusEnum.ERROR };
       }
     },
   ),
