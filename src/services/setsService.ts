@@ -6,6 +6,7 @@ import {
   ISet,
 } from "../interfaces/sets.interface";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 export const setsService = {
   getAll: cache(async (page: number) => {
@@ -34,9 +35,9 @@ export const setsService = {
         "/sets",
         data,
       );
-      return { data: set.data, status: QueryStatusEnum.SUCCESS };
+      return { data: set.data, status: MutationStatusEnum.SUCCESS };
     } catch {
-      return { status: QueryStatusEnum.ERROR };
+      return { status: MutationStatusEnum.ERROR };
     }
   },
 
