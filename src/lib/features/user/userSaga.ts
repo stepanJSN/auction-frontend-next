@@ -16,17 +16,22 @@ import {
 import { AxiosError } from "axios";
 import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
 import { IUser, IUpdateUser } from "@/interfaces/user.interfaces";
-import { userService } from "@/services/userService";
+import {
+  deleteUserAction,
+  getCurrentUserAction,
+  getOneUserAction,
+  updateUserAction,
+} from "./user.actions";
 
 const NOTIFICATION_TIMEOUT = 3000;
 
 function* getUserSaga(action: PayloadAction<string | undefined>) {
   try {
     if (action.payload) {
-      const userData: IUser = yield call(userService.getOne, action.payload);
+      const userData: IUser = yield call(getOneUserAction, action.payload);
       yield put(getUserSuccess(userData));
     } else {
-      const userData: IUser = yield call(userService.getCurrent);
+      const userData: IUser = yield call(getCurrentUserAction);
       yield put(getUserSuccess(userData));
     }
   } catch (error) {
@@ -41,7 +46,7 @@ function* updateUserSaga(
 ) {
   try {
     const userData: IUser = yield call(
-      userService.update,
+      updateUserAction,
       action.payload.id,
       action.payload.data,
     );
@@ -60,7 +65,7 @@ function* updateUserSaga(
 
 function* deleteUserSaga(action: PayloadAction<string>) {
   try {
-    yield call(userService.delete, action.payload);
+    yield call(deleteUserAction, action.payload);
     yield put(deleteUserSuccess());
   } catch (error) {
     yield put(

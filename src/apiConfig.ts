@@ -1,8 +1,6 @@
-import axios, { AxiosError, type CreateAxiosDefaults } from "axios";
-import { authService } from "./services/authService";
-import { ROUTES } from "./config/routesConfig";
+import axios, { type CreateAxiosDefaults } from "axios";
 import { SERVER_URL } from "./constants/envConstants";
-import { getAccessToken, setAccessToken } from "./actions";
+import { auth } from "./auth";
 
 const options: CreateAxiosDefaults = {
   baseURL: SERVER_URL,
@@ -15,28 +13,8 @@ const options: CreateAxiosDefaults = {
 const api = axios.create(options);
 const apiWithAuth = axios.create(options);
 
-const redirectToSignIn = () => {
-  window.location.href = ROUTES.SIGN_IN;
-};
-
-async function handleTokenRefresh(error: AxiosError) {
-  const originalRequest: any = error.config!;
-
-  if (error.response?.status === 401 && !originalRequest._retry) {
-    originalRequest._retry = true;
-    const token = (await authService.getNewTokens()).accessToken;
-    if (token) {
-      await setAccessToken(token);
-      originalRequest.headers.Authorization = `Bearer ${token}`;
-      return apiWithAuth.request(originalRequest);
-    }
-  }
-
-  throw error;
-}
-
 apiWithAuth.interceptors.request.use(async (config) => {
-  const accessToken = await getAccessToken();
+  const accessToken = (await auth())?.user?.data.accessToken.token;
 
   if (config?.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -48,16 +26,6 @@ apiWithAuth.interceptors.request.use(async (config) => {
 apiWithAuth.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (!error.response || error.response.status !== 401) {
-      return Promise.reject(error);
-    }
-
-    try {
-      return await handleTokenRefresh(error);
-    } catch {
-      redirectToSignIn();
-    }
-
     return Promise.reject(error);
   },
 );
