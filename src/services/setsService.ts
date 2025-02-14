@@ -29,11 +29,15 @@ export const setsService = {
   }),
 
   create: async (data: ICreateSet) => {
-    const set = await apiWithAuth.post<Omit<ISet, "is_user_has_set">>(
-      "/sets",
-      data,
-    );
-    return set.data;
+    try {
+      const set = await apiWithAuth.post<Omit<ISet, "is_user_has_set">>(
+        "/sets",
+        data,
+      );
+      return { data: set.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   },
 
   update: async (id: string, data: Partial<ICreateSet>) => {

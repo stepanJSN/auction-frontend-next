@@ -1,7 +1,6 @@
 import CardsGrid from "@/components/CardsGrid";
 import PageError from "@/components/PageError";
 import PageLoader from "@/components/PageLoader";
-import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { ICardSummary } from "@/interfaces/cards.interface";
 import { SxProps, TextField, Typography } from "@mui/material";
 import { useCallback } from "react";
@@ -60,9 +59,9 @@ export default function CardsList({
       />
       {isLoading && <PageLoader />}
       {isError && <PageError />}
-      {data?.data.length !== 0 && (
+      {data?.data && data?.data.length !== 0 && (
         <>
-          <CardsGrid cards={data!.data} cardActions={cardActions} />
+          <CardsGrid cards={data.data} cardActions={cardActions} />
           <CardListPagination
             currentPage={page}
             totalPages={data!.info.totalPages}
@@ -70,7 +69,7 @@ export default function CardsList({
           />
         </>
       )}
-      {status === QueryStatusEnum.SUCCESS && data && data.data.length === 0 && (
+      {data?.data && data.data.length === 0 && (
         <Typography variant="h6">No cards found</Typography>
       )}
     </>

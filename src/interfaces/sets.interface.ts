@@ -20,3 +20,5 @@ export interface ICreateSet {
   bonus: number;
   cardsId: string[];
 }
+
+export type ISetForm = Pick<ISet, "name" | "bonus" | "cards">;
