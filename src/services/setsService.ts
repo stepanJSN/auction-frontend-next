@@ -7,6 +7,7 @@ import {
 } from "../interfaces/sets.interface";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
+import { AxiosError } from "axios";
 
 export const setsService = {
   getAll: cache(async (page: number) => {
@@ -23,10 +24,17 @@ export const setsService = {
   }),
 
   getOne: cache(async (id: string) => {
-    const set = await apiWithAuth.get<Omit<ISet, "is_user_has_set">>(
-      `/sets/${id}`,
-    );
-    return set.data;
+    try {
+      const set = await apiWithAuth.get<Omit<ISet, "is_user_has_set">>(
+        `/sets/${id}`,
+      );
+      return { data: set.data, status: QueryStatusEnum.SUCCESS };
+    } catch (error) {
+      return {
+        status: QueryStatusEnum.ERROR,
+        errorCode: (error as AxiosError).status,
+      };
+    }
   }),
 
   create: async (data: ICreateSet) => {
@@ -42,14 +50,26 @@ export const setsService = {
   },
 
   update: async (id: string, data: Partial<ICreateSet>) => {
-    const set = await apiWithAuth.patch<Omit<ISet, "is_user_has_set">>(
-      `/sets/${id}`,
-      data,
-    );
-    return set.data;
+    try {
+      const set = await apiWithAuth.patch<Omit<ISet, "is_user_has_set">>(
+        `/sets/${id}`,
+        data,
+      );
+      return { data: set.data, status: MutationStatusEnum.SUCCESS };
+    } catch (error) {
+      return {
+        errorCode: (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
+    }
   },
 
   delete: async (id: string) => {
-    await apiWithAuth.delete(`/sets/${id}`);
+    try {
+      await apiWithAuth.delete(`/sets/${id}`);
+      return { status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 };

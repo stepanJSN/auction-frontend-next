@@ -16,7 +16,7 @@ export const ROUTES = {
   EDIT_CARD: (cardId: string) => `/cards/${cardId}/edit`,
   SETS: "/sets",
   CREATE_SET: "/sets/create",
-  EDIT_SET: (setId: string) => `/sets/edit/${setId}`,
+  EDIT_SET: (setId: string) => `/sets/${setId}/edit`,
   STATISTICS: "/statistics",
   USERS: "/users",
   TRANSACTIONS: "/transactions",

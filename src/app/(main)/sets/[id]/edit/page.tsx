@@ -1,17 +1,17 @@
 import { Typography } from "@mui/material";
-import EditCardForm from "./EditCardForm";
-import { cardsService } from "@/services/cardsService";
-import PageError from "@/components/PageError";
-import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
+import { setsService } from "@/services/setsService";
 import { notFound } from "next/navigation";
+import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
+import PageError from "@/components/PageError";
+import EditSetForm from "./EditSetForm";
 
-export default async function EditCardPage({
+export default async function CreateSetPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const { data, errorCode } = await cardsService.getOne(id);
+  const { data, errorCode } = await setsService.getOne(id);
 
   if (errorCode === ErrorCodesEnum.NotFound) {
     notFound();
@@ -24,9 +24,9 @@ export default async function EditCardPage({
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        Edit Card
+        Edit Set
       </Typography>
-      <EditCardForm data={data} cardId={id} />
+      <EditSetForm data={data} cardId={id} />
     </>
   );
 }
