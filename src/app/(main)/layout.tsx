@@ -17,10 +17,8 @@ const containerStyles: SxProps = {
 
 export default function MainLayout({
   children,
-  cardModal,
 }: Readonly<{
   children: React.ReactNode;
-  cardModal: React.ReactNode;
 }>) {
   useUserData();
   useWebsocket();
@@ -29,7 +27,6 @@ export default function MainLayout({
     <Stack sx={globalWrapperStyles}>
       <Header />
       <Container sx={containerStyles}>{children}</Container>
-      {cardModal}
       <Footer />
     </Stack>
   );
