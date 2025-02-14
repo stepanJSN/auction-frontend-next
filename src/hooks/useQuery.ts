@@ -1,7 +1,4 @@
-import { AxiosError } from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import { ErrorCodesEnum } from '../enums/errorCodes.enum';
-import { QueryStatusEnum } from '../enums/queryStatus.enum';
+import { useCallback, useEffect, useState } from "react";
 
 export default function useQuery<T, R = unknown>({
   requestFn,
@@ -12,25 +9,17 @@ export default function useQuery<T, R = unknown>({
   params: T;
   autoFetch: boolean;
 }) {
-  const [status, setStatus] = useState<QueryStatusEnum>(QueryStatusEnum.IDLE);
-  const [errorCode, setErrorCode] = useState<ErrorCodesEnum | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<R | null>(null);
 
   const execute = useCallback(
     async (requestData: T) => {
-      setStatus(QueryStatusEnum.LOADING);
-      setErrorCode(null);
+      setIsLoading(false);
       setData(null);
 
-      try {
-        const response = await requestFn(requestData);
-        setData(response);
-        setStatus(QueryStatusEnum.SUCCESS);
-      } catch (error) {
-        const axiosError = error as AxiosError;
-        setErrorCode(axiosError.response?.status || ErrorCodesEnum.ServerError);
-        setStatus(QueryStatusEnum.ERROR);
-      }
+      const response = await requestFn(requestData);
+      setData(response);
+      setIsLoading(false);
     },
     [requestFn],
   );
@@ -39,5 +28,5 @@ export default function useQuery<T, R = unknown>({
     if (autoFetch) execute(params);
   }, [params, execute, autoFetch]);
 
-  return { status, errorCode, data, execute };
+  return { isLoading, data, execute };
 }

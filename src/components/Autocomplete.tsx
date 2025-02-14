@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
 import {
   TextField,
   Autocomplete as MuiAutocomplete,
   AutocompleteRenderInputParams,
-} from '@mui/material';
-import { useDebounceValue } from 'usehooks-ts';
-import useQuery from '../hooks/useQuery';
-import { QueryStatusEnum } from '../enums/queryStatus.enum';
-import { IPagination } from '../interfaces/pagination.interface';
-import { useCallback } from 'react';
+} from "@mui/material";
+import { useDebounceValue } from "usehooks-ts";
+import useQuery from "../hooks/useQuery";
+import { IPagination } from "../interfaces/pagination.interface";
+import { useCallback } from "react";
 
 type AutocompleteProps<T> = {
   label: string;
@@ -36,9 +35,9 @@ export default function Autocomplete<T>({
   errorText,
   noOptionsText,
 }: AutocompleteProps<T>) {
-  const [searchValue, setSearchValue] = useDebounceValue('', 500);
+  const [searchValue, setSearchValue] = useDebounceValue("", 500);
 
-  const { data, status } = useQuery({
+  const { data, isLoading } = useQuery({
     requestFn: searchFunc,
     params: searchValue,
     autoFetch:
@@ -78,7 +77,7 @@ export default function Autocomplete<T>({
       size="small"
       getOptionLabel={getLabel}
       value={value}
-      loading={status === QueryStatusEnum.LOADING}
+      loading={isLoading}
       noOptionsText={noOptionsText ?? null}
       onChange={handleChange}
       onInputChange={handleInputChange}
