@@ -1,7 +1,4 @@
 "use client";
-import { Gender } from "@/enums/gender.enum";
-import { IEpisode } from "@/interfaces/episodes.interfaces";
-import { ILocation } from "@/interfaces/locations.interfaces";
 import { Alert, Button, Grid2, GridSize, SxProps } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ImageUpload from "../ImageUpload";
@@ -10,19 +7,7 @@ import { createCardAction } from "../cards.actions";
 import { useEffect } from "react";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { createCardErrorMessages } from "./createCardErrorMessages";
-
-export interface ICardFrom {
-  name: string;
-  type?: string;
-  gender: Gender;
-  isActive: boolean;
-  location: ILocation;
-  episodes: IEpisode[];
-  image: {
-    url: string;
-    image: Blob;
-  } | null;
-}
+import { ICardFrom } from "@/interfaces/cards.interface";
 
 const alertStyles: SxProps = {
   mb: 1,

@@ -6,7 +6,7 @@ import { getEpisodesByNameAction } from "./cards.actions";
 import FormAutocomplete from "@/components/FormAutocomplete";
 import Autocomplete from "@/components/Autocomplete";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ICardFrom } from "./create/CreateCardForm";
+import { ICardFrom } from "@/interfaces/cards.interface";
 
 export type EpisodesListFormProps = {
   control: Control<ICardFrom>;

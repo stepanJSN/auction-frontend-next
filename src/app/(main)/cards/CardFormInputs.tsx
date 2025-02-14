@@ -10,9 +10,9 @@ import { Stack } from "@mui/material";
 import React, { useCallback } from "react";
 import EpisodesListForm from "./EpisodesListForm";
 import { Control, FieldErrors } from "react-hook-form";
-import { ICardFrom } from "./create/CreateCardForm";
 import { ILocation } from "@/interfaces/locations.interfaces";
 import { getLocationsByNameAction } from "./cards.actions";
+import { ICardFrom } from "@/interfaces/cards.interface";
 
 type CardFormInputsProps = {
   control: Control<ICardFrom>;
