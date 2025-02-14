@@ -12,6 +12,7 @@ import Notification from "@/components/Notification";
 import { editSetAction } from "../../sets.action";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { delay } from "@/helpers/delay";
+import DeleteButton from "./DeleteButton";
 
 const formContainerStyles = {
   width: "100%",
@@ -21,10 +22,10 @@ const formSpacing = { xs: 0, sm: 1 };
 
 type EditSetFormProps = {
   data: ISetForm;
-  cardId: string;
+  setId: string;
 };
 
-export default function EditSetForm({ data, cardId }: EditSetFormProps) {
+export default function EditSetForm({ data, setId }: EditSetFormProps) {
   const {
     control,
     handleSubmit,
@@ -74,7 +75,7 @@ export default function EditSetForm({ data, cardId }: EditSetFormProps) {
   );
 
   const editSet = async (data: ISetForm) => {
-    const result = await editSetAction(cardId, data);
+    const result = await editSetAction(setId, data);
     if (result.status === MutationStatusEnum.ERROR) {
       setError("root.serverError", { type: "serverError" });
     }
@@ -99,15 +100,20 @@ export default function EditSetForm({ data, cardId }: EditSetFormProps) {
             </Grid2>
           ))}
         </Grid2>
-        <Grid2 size="auto">
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Updating..." : "Update"}
-          </Button>
+        <Grid2 size="auto" container spacing={1}>
+          <Grid2 size="auto">
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Updating..." : "Update"}
+            </Button>
+          </Grid2>
+          <Grid2 size="auto">
+            <DeleteButton setId={setId} />
+          </Grid2>
         </Grid2>
         <Grid2 size={12}>
           <CardsList handleAddCard={handleAddCard} cardsInSet={fields} />

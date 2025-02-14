@@ -26,7 +26,7 @@ export default async function CreateSetPage({
       <Typography variant="h4" gutterBottom>
         Edit Set
       </Typography>
-      <EditSetForm data={data} cardId={id} />
+      <EditSetForm data={data} setId={id} />
     </>
   );
 }
