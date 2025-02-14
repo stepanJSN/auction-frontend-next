@@ -1,5 +1,5 @@
-import { Gender } from '../enums/gender.enum';
-import { IPagination } from './pagination.interface';
+import { Gender } from "../enums/gender.enum";
+import { IPagination } from "./pagination.interface";
 
 export interface ICardSummary {
   id: string;
@@ -40,4 +40,5 @@ export interface ICreateCard {
   isActive: boolean;
   locationId: number;
   episodesId: number[];
+  image: Blob;
 }
