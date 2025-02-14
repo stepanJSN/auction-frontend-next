@@ -1,5 +1,5 @@
-import { ICardSummary } from './cards.interface';
-import { IPagination } from './pagination.interface';
+import { ICardSummary } from "./cards.interface";
+import { IPagination } from "./pagination.interface";
 
 export interface ISet {
   id: string;
