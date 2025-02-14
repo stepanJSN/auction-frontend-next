@@ -7,6 +7,7 @@ import {
 } from "../interfaces/cards.interface";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { AxiosError } from "axios";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 export const cardsService = {
   getAll: cache(
@@ -38,8 +39,11 @@ export const cardsService = {
     try {
       const card = await apiWithAuth.get<ICard>(`/cards/${id}`);
       return { data: card.data, status: QueryStatusEnum.SUCCESS };
-    } catch {
-      return { status: QueryStatusEnum.ERROR };
+    } catch (error) {
+      return {
+        status: QueryStatusEnum.ERROR,
+        errorCode: (error as AxiosError).status,
+      };
     }
   }),
 
@@ -58,11 +62,11 @@ export const cardsService = {
           "Content-Type": "multipart/form-data",
         },
       });
-      return { data: card.data, status: QueryStatusEnum.SUCCESS };
+      return { data: card.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
-        status: QueryStatusEnum.ERROR,
+        status: MutationStatusEnum.ERROR,
       };
     }
   },
@@ -84,16 +88,21 @@ export const cardsService = {
           "Content-Type": "multipart/form-data",
         },
       });
-      return { data: card.data, status: QueryStatusEnum.SUCCESS };
+      return { data: card.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
-        status: QueryStatusEnum.ERROR,
+        status: MutationStatusEnum.ERROR,
       };
     }
   },
 
   delete: async (id: string) => {
-    await apiWithAuth.delete(`/cards/${id}`);
+    try {
+      await apiWithAuth.delete(`/cards/${id}`);
+      return { status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 };
