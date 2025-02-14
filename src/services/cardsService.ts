@@ -67,21 +67,30 @@ export const cardsService = {
     }
   },
 
-  update: async (id: string, data: ICreateCard, image?: Blob) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    if (data.type) formData.append("type", data.type);
-    formData.append("gender", data.gender);
-    formData.append("isActive", data.isActive.toString());
-    formData.append("locationId", data.locationId.toString());
-    formData.append("episodesId", JSON.stringify(data.episodesId));
-    if (image) formData.append("image", image);
-    const card = await apiWithAuth.patch<ICard>(`/cards/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return card.data;
+  update: async (id: string, data: Partial<ICreateCard>) => {
+    try {
+      const formData = new FormData();
+      if (data.name) formData.append("name", data.name);
+      if (data.type) formData.append("type", data.type);
+      if (data.gender) formData.append("gender", data.gender);
+      if (data.isActive) formData.append("isActive", data.isActive.toString());
+      if (data.locationId)
+        formData.append("locationId", data.locationId.toString());
+      if (data.episodesId)
+        formData.append("episodesId", JSON.stringify(data.episodesId));
+      if (data.image) formData.append("image", data.image);
+      const card = await apiWithAuth.patch<ICard>(`/cards/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return { data: card.data, status: QueryStatusEnum.SUCCESS };
+    } catch (error) {
+      return {
+        errorCode: (error as AxiosError).status,
+        status: QueryStatusEnum.ERROR,
+      };
+    }
   },
 
   delete: async (id: string) => {
