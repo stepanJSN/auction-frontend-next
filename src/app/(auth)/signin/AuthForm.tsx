@@ -26,7 +26,7 @@ export default function AuthForm() {
 
   const signin = async (data: ISingInRequest) => {
     const result = await signinAction(data);
-    if (result.errorCode) {
+    if (result?.errorCode) {
       setError("root.serverError", { type: result.errorCode.toString() });
     }
   };

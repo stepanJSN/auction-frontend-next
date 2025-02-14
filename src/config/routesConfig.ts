@@ -13,7 +13,7 @@ export const ROUTES = {
   CARD_DETAILS: (cardId: string) => `/cards/${cardId}`,
   USER_CARDS: "/",
   CREATE_CARD: "/cards/create",
-  EDIT_CARD: (cardId: string) => `/cards/edit/${cardId}`,
+  EDIT_CARD: (cardId: string) => `/cards/${cardId}/edit`,
   SETS: "/sets",
   CREATE_SET: "/sets/create",
   EDIT_SET: (setId: string) => `/sets/edit/${setId}`,
