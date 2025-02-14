@@ -28,9 +28,9 @@ export const cardsService = {
         const cards = await apiWithAuth.get<IGetCardsResponse>(url, {
           params,
         });
-        return { data: cards.data, success: true };
+        return { data: cards.data, status: QueryStatusEnum.SUCCESS };
       } catch {
-        return { success: false };
+        return { success: QueryStatusEnum.ERROR };
       }
     },
   ),
