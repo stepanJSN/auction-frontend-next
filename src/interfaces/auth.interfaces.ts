@@ -1,4 +1,4 @@
-import { Role } from '../enums/role.enum';
+import { Role } from "../enums/role.enum";
 
 export interface ISingInRequest {
   email: string;
@@ -6,7 +6,21 @@ export interface ISingInRequest {
 }
 
 export interface ISingInResponse {
-  accessToken: string;
+  accessToken: {
+    token: string;
+    exp: string;
+  };
+  refreshToken: {
+    token: string;
+    maxAge: number;
+  };
   id: string;
   role: Role;
+}
+
+export interface IRefreshTokenResponse {
+  accessToken: {
+    token: string;
+    exp: string;
+  };
 }
