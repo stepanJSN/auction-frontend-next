@@ -31,3 +31,11 @@ export async function editLocationAction(
   }
   return updatedLocation;
 }
+
+export async function deleteLocationAction(locationId: number) {
+  const deletedLocation = await locationsService.delete(locationId);
+  if (deletedLocation.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.LOCATIONS);
+  }
+  return deletedLocation;
+}

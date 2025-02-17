@@ -12,6 +12,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
+import { useCallback } from "react";
+import { deleteLocationAction } from "./locations.actions";
 
 type LocationsTableRowProps = {
   location: ILocation;
@@ -29,6 +31,10 @@ export default function LocationsTableRow({
 }: LocationsTableRowProps) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const deleteLocation = useCallback(
+    () => deleteLocationAction(location.id),
+    [location.id],
+  );
 
   return (
     <>
@@ -51,7 +57,7 @@ export default function LocationsTableRow({
             >
               {matches ? "Edit" : <EditIcon />}
             </Button>
-            <Button variant="outlined" color="error">
+            <Button variant="outlined" color="error" onClick={deleteLocation}>
               {matches ? "Delete" : <DeleteIcon />}
             </Button>
           </Stack>
