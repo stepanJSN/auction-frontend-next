@@ -5,7 +5,7 @@ import { delay } from "@/helpers/delay";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { ICreateLocation } from "@/interfaces/locations.interfaces";
 import { Alert, Box, Button } from "@mui/material";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { createLocationAction } from "./locations.actions";
 import { locationErrorMessages } from "./locationErrorMessages";
@@ -20,12 +20,15 @@ export default function CreateLocationForm() {
   } = useForm<ICreateLocation>();
   const getErrorMessage = useErrorMessage(locationErrorMessages);
 
-  const createLocation = async (data: ICreateLocation) => {
-    const result = await createLocationAction(data);
-    if (result.errorCode) {
-      setError("root.serverError", { type: result.errorCode.toString() });
-    }
-  };
+  const createLocation = useCallback(
+    async (data: ICreateLocation) => {
+      const result = await createLocationAction(data);
+      if (result.errorCode) {
+        setError("root.serverError", { type: result.errorCode.toString() });
+      }
+    },
+    [setError],
+  );
 
   useEffect(() => {
     async function resetForm() {
