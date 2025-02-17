@@ -10,6 +10,8 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import LocationsTableRow from "./LocationsTableRow";
+import PageLoader from "@/components/PageLoader";
+import useClient from "@/hooks/useClient";
 
 type LocationsTableProps = {
   locations: ILocation[];
@@ -18,6 +20,11 @@ type LocationsTableProps = {
 export default function LocationsTable({ locations }: LocationsTableProps) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const isClient = useClient();
+
+  if (!isClient) {
+    return <PageLoader />;
+  }
 
   return (
     <TableContainer>
