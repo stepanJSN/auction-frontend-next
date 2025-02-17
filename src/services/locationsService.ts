@@ -28,7 +28,7 @@ export const locationsService = {
     },
   ),
 
-  getOne: cache(async (id: string) => {
+  getOne: cache(async (id: number) => {
     try {
       const location = await apiWithAuth.get<ILocation>(`/locations/${id}`);
       return { location: location.data, status: QueryStatusEnum.SUCCESS };

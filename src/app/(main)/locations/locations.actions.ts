@@ -13,3 +13,10 @@ export async function getMoreLocationsAction(page: number, name?: string) {
 export async function createLocationAction(payload: ICreateLocation) {
   return locationsService.create(payload);
 }
+
+export async function editLocationAction(
+  locationId: number,
+  payload: ICreateLocation,
+) {
+  return locationsService.update(locationId, payload);
+}
