@@ -7,6 +7,7 @@ import {
 } from "../interfaces/locations.interfaces";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { AxiosError } from "axios";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 export const locationsService = {
   getAll: cache(
@@ -43,11 +44,11 @@ export const locationsService = {
   create: async (data: ICreateLocation) => {
     try {
       const location = await apiWithAuth.post<ILocation>("/locations", data);
-      return { location: location.data, status: QueryStatusEnum.SUCCESS };
+      return { location: location.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
-        status: QueryStatusEnum.ERROR,
+        status: MutationStatusEnum.ERROR,
       };
     }
   },
@@ -58,11 +59,11 @@ export const locationsService = {
         `/locations/${id}`,
         data,
       );
-      return { location: location.data, status: QueryStatusEnum.SUCCESS };
+      return { location: location.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
-        status: QueryStatusEnum.ERROR,
+        status: MutationStatusEnum.ERROR,
       };
     }
   },
@@ -70,9 +71,9 @@ export const locationsService = {
   delete: async (id: number) => {
     try {
       await apiWithAuth.delete(`/locations/${id}`);
-      return { status: QueryStatusEnum.SUCCESS };
+      return { status: MutationStatusEnum.SUCCESS };
     } catch {
-      return { status: QueryStatusEnum.ERROR };
+      return { status: MutationStatusEnum.ERROR };
     }
   },
 };
