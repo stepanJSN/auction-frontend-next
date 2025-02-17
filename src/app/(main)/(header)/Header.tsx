@@ -26,9 +26,6 @@ import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 const HeaderStyled = styled(Grid2)<Grid2Props>(({ theme }) => ({
   position: "relative",
   padding: theme.spacing(1, 0),
-  [theme.breakpoints.up("lg")]: {
-    padding: theme.spacing(0),
-  },
 }));
 
 const logoStyles: SxProps<Theme> = (theme: Theme) => ({

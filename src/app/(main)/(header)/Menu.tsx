@@ -9,6 +9,7 @@ type MenuProps = {
 };
 
 const listStyles: SxProps = {
+  p: 0,
   display: {
     xs: "block",
     lg: "flex",
