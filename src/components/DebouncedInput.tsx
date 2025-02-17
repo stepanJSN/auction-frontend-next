@@ -1,14 +1,16 @@
-"use client"
-import { TextField } from '@mui/material';
-import { useCallback } from 'react';
-import { useDebounceCallback } from 'usehooks-ts';
+"use client";
+import { TextField } from "@mui/material";
+import { useCallback } from "react";
+import { useDebounceCallback } from "usehooks-ts";
 
 type DebouncedInputProps = {
   label: string;
+  defaultValue: string;
   handleDebouncedChange: (value: string) => void;
 };
 
 export default function DebouncedInput({
+  defaultValue,
   label,
   handleDebouncedChange,
 }: DebouncedInputProps) {
@@ -19,5 +21,12 @@ export default function DebouncedInput({
       debounced(event.target.value),
     [debounced],
   );
-  return <TextField label={label} onChange={handleInputChange} size="small" />;
+  return (
+    <TextField
+      defaultValue={defaultValue}
+      label={label}
+      onChange={handleInputChange}
+      size="small"
+    />
+  );
 }
