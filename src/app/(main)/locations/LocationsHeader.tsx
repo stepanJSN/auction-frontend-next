@@ -1,10 +1,10 @@
+"use client";
 import DebouncedInput from "@/components/DebouncedInput";
 import { ROUTES } from "@/config/routesConfig";
 import { Stack, Button, SxProps } from "@mui/material";
 import { ResponsiveStyleValue } from "@mui/system";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const locationsHeaderStyles: SxProps = {
   mb: 2,
