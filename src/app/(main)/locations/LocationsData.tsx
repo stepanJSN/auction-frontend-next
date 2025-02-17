@@ -7,6 +7,8 @@ import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholde
 import LoadMoreBtn from "@/components/LoadMoreBtn";
 import LocationsTable from "./LocationsTable";
 import useLocations from "./useLocations";
+import useClient from "@/hooks/useClient";
+import PageLoader from "@/components/PageLoader";
 
 type LocationsDataProps = {
   initialLocations: ILocation[];
@@ -24,6 +26,11 @@ export default function LocationsData({
     searchLocationName,
     hasMore,
   });
+  const isClient = useClient();
+
+  if (!isClient) {
+    return <PageLoader />;
+  }
 
   return (
     <>
