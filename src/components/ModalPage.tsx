@@ -1,32 +1,30 @@
-"use client"
-import { Dialog, IconButton, SxProps } from '@mui/material';
-import { useCallback } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { useRouter } from 'next/router';
+"use client";
+import { Dialog, IconButton, SxProps } from "@mui/material";
+import { useCallback } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { useRouter } from "next/navigation";
 
 type ModalPageProps = {
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  parentPath?: string;
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
   children: React.ReactNode;
 };
 
 const closeIconStyles: SxProps = {
-  position: 'absolute',
+  position: "absolute",
   top: 5,
   right: 5,
-  backgroundColor: 'common.white',
+  backgroundColor: "common.white",
 };
 
 export default function ModalPage({
   children,
-  maxWidth = 'lg',
-  parentPath = '../',
+  maxWidth = "lg",
 }: ModalPageProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleClose = useCallback(() => {
-    router.push(parentPath);
-  }, [router, parentPath]);
+    router.back();
+  }, [router]);
 
   return (
     <Dialog open maxWidth={maxWidth} onClose={handleClose}>

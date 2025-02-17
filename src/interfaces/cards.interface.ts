@@ -1,5 +1,7 @@
-import { Gender } from '../enums/gender.enum';
-import { IPagination } from './pagination.interface';
+import { Gender } from "../enums/gender.enum";
+import { IEpisode } from "./episodes.interfaces";
+import { ILocation } from "./locations.interfaces";
+import { IPagination } from "./pagination.interface";
 
 export interface ICardSummary {
   id: string;
@@ -21,16 +23,8 @@ export interface IGetCardsResponse {
 
 export interface ICard extends ICardSummary {
   is_owned: boolean;
-  location: {
-    id: number;
-    name: string;
-    type: string;
-  };
-  episodes: {
-    id: number;
-    name: string;
-    code: string;
-  }[];
+  location: ILocation;
+  episodes: IEpisode[];
 }
 
 export interface ICreateCard {
@@ -40,4 +34,18 @@ export interface ICreateCard {
   isActive: boolean;
   locationId: number;
   episodesId: number[];
+  image: Blob;
+}
+
+export interface ICardFrom {
+  name: string;
+  type?: string;
+  gender: Gender;
+  isActive: boolean;
+  location: ILocation;
+  episodes: IEpisode[];
+  image: {
+    url: string;
+    image?: Blob;
+  } | null;
 }
