@@ -9,6 +9,7 @@ import {
   IUser,
 } from "../interfaces/user.interfaces";
 import { AxiosError } from "axios";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 
 export const userService = {
   create: async (data: ICreateUser) => {
@@ -39,16 +40,19 @@ export const userService = {
   }),
 
   getAll: cache(async (payload: IGetUserPayload) => {
-    const params = new URLSearchParams();
-    if (payload.page) params.append("page", payload.page.toString());
-    if (payload.sortType) params.append("sortType", payload.sortType);
-    if (payload.sortOrder) params.append("sortOrder", payload.sortOrder);
-    if (payload.isAdmin) params.append("isAdmin", payload.isAdmin.toString());
-    if (payload.fullName) params.append("fullName", payload.fullName);
-    const users = await apiWithAuth.get<IGetUsersResponse>("/users", {
-      params,
-    });
-    return users.data;
+    try {
+      const params = new URLSearchParams();
+      if (payload.page) params.append("page", payload.page.toString());
+      if (payload.sortType) params.append("sortType", payload.sortType);
+      if (payload.sortOrder) params.append("sortOrder", payload.sortOrder);
+      if (payload.isAdmin) params.append("isAdmin", payload.isAdmin.toString());
+      const users = await apiWithAuth.get<IGetUsersResponse>("/users", {
+        params,
+      });
+      return { data: users.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   delete: async (id: string) => {

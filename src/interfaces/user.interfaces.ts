@@ -1,6 +1,6 @@
-import { Role } from '../enums/role.enum';
-import { SortOrderEnum } from '../enums/sortOrder.enum';
-import { IPagination } from './pagination.interface';
+import { Role } from "../enums/role.enum";
+import { SortOrderEnum } from "../enums/sortOrder.enum";
+import { IPagination } from "./pagination.interface";
 
 export interface ICreateUser {
   email: string;
@@ -9,7 +9,7 @@ export interface ICreateUser {
   password: string;
 }
 
-export interface IUpdateUser extends Partial<Omit<ICreateUser, 'email'>> {}
+export type IUpdateUser = Partial<Omit<ICreateUser, "email">>;
 
 export interface IUpdateUserRole {
   id: string;
@@ -47,8 +47,8 @@ export interface IGetUsersResponse {
 }
 
 export enum UsersSortTypeEnum {
-  CREATION_DATE = 'creationDate',
-  RATING = 'rating',
+  CREATION_DATE = "creationDate",
+  RATING = "rating",
 }
 
 export interface IGetUserPayload {
@@ -56,5 +56,4 @@ export interface IGetUserPayload {
   sortType?: UsersSortTypeEnum;
   sortOrder?: SortOrderEnum;
   isAdmin?: boolean;
-  fullName?: string;
 }
