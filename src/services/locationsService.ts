@@ -28,6 +28,18 @@ export const locationsService = {
     },
   ),
 
+  getOne: cache(async (id: string) => {
+    try {
+      const location = await apiWithAuth.get<ILocation>(`/locations/${id}`);
+      return { location: location.data, status: QueryStatusEnum.SUCCESS };
+    } catch (error) {
+      return {
+        status: QueryStatusEnum.ERROR,
+        errorCode: (error as AxiosError).status,
+      };
+    }
+  }),
+
   create: async (data: ICreateLocation) => {
     try {
       const location = await apiWithAuth.post<ILocation>("/locations", data);
