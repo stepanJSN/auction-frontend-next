@@ -4,7 +4,7 @@ import FaqHeader from "@/components/FaqHeader";
 import { ROUTES } from "@/config/routesConfig";
 import SetsList from "./SetsList";
 
-export default async function AllCardsPage(props: {
+export default async function AllSetsPage(props: {
   searchParams?: Promise<{
     page?: string;
   }>;

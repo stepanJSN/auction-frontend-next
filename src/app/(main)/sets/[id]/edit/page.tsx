@@ -5,7 +5,7 @@ import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
 import PageError from "@/components/PageError";
 import EditSetForm from "./EditSetForm";
 
-export default async function CreateSetPage({
+export default async function EditSetPage({
   params,
 }: {
   params: Promise<{ id: string }>;
