@@ -11,6 +11,9 @@ import { useCallback } from "react";
 import { ROUTES } from "../config/routesConfig";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/lib/features/user/userSlice";
+import { Role } from "@/enums/role.enum";
 
 type FaqHeaderProps = {
   currentPage: string;
@@ -23,6 +26,7 @@ const containerStyles: SxProps = {
 
 export default function FaqHeader({ currentPage }: FaqHeaderProps) {
   const router = useRouter();
+  const { role } = useSelector(selectUser);
 
   const handleChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
@@ -45,15 +49,19 @@ export default function FaqHeader({ currentPage }: FaqHeaderProps) {
         <ToggleButton value={ROUTES.CARDS}>Cards</ToggleButton>
         <ToggleButton value={ROUTES.SETS}>Sets</ToggleButton>
       </ToggleButtonGroup>
-      <Button
-        component={Link}
-        href={
-          currentPage === ROUTES.CARDS ? ROUTES.CREATE_CARD : ROUTES.CREATE_SET
-        }
-        variant="outlined"
-      >
-        {currentPage === ROUTES.CARDS ? "Create card" : "Create set"}
-      </Button>
+      {role === Role.ADMIN && (
+        <Button
+          component={Link}
+          href={
+            currentPage === ROUTES.CARDS
+              ? ROUTES.CREATE_CARD
+              : ROUTES.CREATE_SET
+          }
+          variant="outlined"
+        >
+          {currentPage === ROUTES.CARDS ? "Create card" : "Create set"}
+        </Button>
+      )}
     </Grid2>
   );
 }

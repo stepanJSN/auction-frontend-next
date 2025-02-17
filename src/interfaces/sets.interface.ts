@@ -1,5 +1,5 @@
-import { ICardSummary } from './cards.interface';
-import { IPagination } from './pagination.interface';
+import { ICardSummary } from "./cards.interface";
+import { IPagination } from "./pagination.interface";
 
 export interface ISet {
   id: string;
@@ -20,3 +20,5 @@ export interface ICreateSet {
   bonus: number;
   cardsId: string[];
 }
+
+export type ISetForm = Pick<ISet, "name" | "bonus" | "cards">;
