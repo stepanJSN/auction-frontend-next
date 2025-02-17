@@ -14,7 +14,11 @@ export async function getMoreLocationsAction(page: number, name?: string) {
 }
 
 export async function createLocationAction(payload: ICreateLocation) {
-  return locationsService.create(payload);
+  const createdLocation = await locationsService.create(payload);
+  if (createdLocation.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.LOCATIONS);
+  }
+  return createdLocation;
 }
 
 export async function editLocationAction(
