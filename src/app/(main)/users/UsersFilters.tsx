@@ -1,3 +1,4 @@
+"use client";
 import BasicSelect from "@/components/Select";
 import Switch from "@/components/Switch";
 import { SortOrderEnum } from "@/enums/sortOrder.enum";
@@ -32,7 +33,7 @@ export default function UsersFilters() {
   const sortType =
     searchParams.get("sortType") || UsersSortTypeEnum.CREATION_DATE;
   const sortOrder = searchParams.get("sortOrder") || SortOrderEnum.ASC;
-  const showOnlyAdmins = !!searchParams.get("showOnlyAdmins");
+  const showOnlyAdmins = !!searchParams.get("isAdmin");
 
   const changeSortType = useCallback(
     (event: SelectChangeEvent) => {
@@ -56,9 +57,9 @@ export default function UsersFilters() {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const params = new URLSearchParams(searchParams);
       if (event.target.checked) {
-        params.set("showOnlyAdmins", "true");
+        params.set("isAdmin", "true");
       } else {
-        params.delete("showOnlyAdmins");
+        params.delete("isAdmin");
       }
       replace(`${pathname}?${params.toString()}`);
     },
