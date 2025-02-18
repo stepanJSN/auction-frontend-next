@@ -1,11 +1,14 @@
+"use client";
 import { Button, Grid2 } from "@mui/material";
 import AuctionCard from "./AuctionCard";
 import Link from "next/link";
 import { ROUTES } from "@/config/routesConfig";
 import { IAuctionSummary } from "@/interfaces/auctions.interfaces";
+import useAuctions from "./useAuctions";
+import useAuctionsUpdateListener from "./useAuctionsUpdateListener";
 
 type AuctionsGridProps = {
-  auctions: IAuctionSummary[];
+  initialAuctions: IAuctionSummary[];
 };
 
 const auctionsGridBreakpoints = {
@@ -14,7 +17,20 @@ const auctionsGridBreakpoints = {
   lg: 4,
 };
 
-export default function AuctionsGrid({ auctions }: AuctionsGridProps) {
+export default function AuctionsGrid({ initialAuctions }: AuctionsGridProps) {
+  const {
+    auctions,
+    updateAuctionGeneralInfo,
+    updateAuctionHighestBid,
+    removeAuctionFromList,
+  } = useAuctions(initialAuctions);
+  useAuctionsUpdateListener({
+    auctions: initialAuctions,
+    updateAuctionGeneralInfo,
+    updateAuctionHighestBid,
+    removeAuctionFromList,
+  });
+
   return (
     <Grid2 container spacing={2} size={12}>
       {auctions.length !== 0 &&

@@ -29,7 +29,7 @@ export default async function AuctionData({ searchParams }: AuctionsDataProps) {
 
   return (
     <>
-      <AuctionsGrid auctions={data.data} />
+      <AuctionsGrid initialAuctions={data.data} />
       <Pagination totalPages={data.info.totalPages} />
     </>
   );
