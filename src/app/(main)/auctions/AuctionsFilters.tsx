@@ -14,6 +14,7 @@ import { AuctionSearchParams } from "./auctionsSearchParams.enum";
 import useFilters from "./useFilters";
 import DebouncedInput from "@/components/DebouncedInput";
 import LocationFilter from "./LocationFilter";
+import PriceSlider from "./PriceSlider";
 
 const sortByOptions = [
   { value: AuctionSortByEnum.CREATION_DATE, label: "Creation date" },
@@ -60,6 +61,8 @@ export default function AuctionsFilters() {
     AuctionSortByEnum.CREATION_DATE;
   const auctionSortOrder =
     searchParams.get(AuctionSearchParams.SORT_ORDER) || SortOrderEnum.ASC;
+  const fromPrice = searchParams.get(AuctionSearchParams.FROM_PRICE) || 0;
+  const toPrice = searchParams.get(AuctionSearchParams.TO_PRICE) || 0;
 
   const { isSidebarOpen, isMobileVersion, toggleSidebarVisibility, ref } =
     useSidebarVisibility("md");
@@ -72,6 +75,7 @@ export default function AuctionsFilters() {
     handleSortOrderChange,
     handleLocationChange,
     resetFilters,
+    handlePriceChange,
   } = useFilters();
 
   return (
@@ -99,16 +103,13 @@ export default function AuctionsFilters() {
             locationId={auctionLocationId}
             changeLocationId={handleLocationChange}
           />
-          {/* {auctionType === AuctionTypeEnum.AVAILABLE &&
-            filters.price.max !== null &&
-            filters.price.min !== null && (
-              <PriceSlider
-                min={filters.price.min}
-                max={filters.price.max}
-                range={priceRange}
-                handlePriceRangeChange={handlePriceRangeChange}
-              />
-            )} */}
+          {auctionType === AuctionTypeEnum.AVAILABLE && (
+            <PriceSlider
+              fromPrice={+fromPrice}
+              toPrice={+toPrice}
+              changePriceFilter={handlePriceChange}
+            />
+          )}
           {auctionType === AuctionTypeEnum.AVAILABLE && (
             <Switch
               label="Show only where user take part"

@@ -1,38 +1,43 @@
 import { Slider } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { getPriceRangeAction } from "./auctions.actions";
 
 type PriceSliderProps = {
-  min: number;
-  max: number;
-  range: [number | null, number | null];
-  handlePriceRangeChange: (
-    _event: React.SyntheticEvent | Event,
-    newValue: number | number[],
-  ) => void;
+  fromPrice: number | null;
+  toPrice: number | null;
+  changePriceFilter: (fromPrice: number, toPrice: number) => void;
 };
 
 const getPriceRangeAriaLabel = () => "price range";
 
 export default function PriceSlider({
-  min,
-  max,
-  range,
-  handlePriceRangeChange,
+  fromPrice,
+  toPrice,
+  changePriceFilter,
 }: PriceSliderProps) {
-  const [sliderValue, setSliderValue] = useState([min, max]);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 0 });
+  const [sliderValue, setSliderValue] = useState([
+    fromPrice ?? 0,
+    toPrice ?? 0,
+  ]);
   const priceRangeMarks = useMemo(
     () => [
-      { value: min, label: min },
-      { value: max, label: max },
+      { value: priceRange.min, label: priceRange.min },
+      { value: priceRange.max, label: priceRange.max },
     ],
-    [max, min],
+    [priceRange.max, priceRange.min],
   );
 
-  useEffect(() => {
-    if (range[0] === min && range[1] === max) {
-      setSliderValue([min, max]);
+  const getPriceRange = useCallback(async () => {
+    const priceRange = await getPriceRangeAction();
+    if (priceRange) {
+      setPriceRange(priceRange);
     }
-  }, [range, min, max]);
+  }, []);
+
+  useEffect(() => {
+    getPriceRange();
+  }, [getPriceRange]);
 
   const handleSliderChange = useCallback(
     (_event: Event, newValue: number | number[]) => {
@@ -43,6 +48,15 @@ export default function PriceSlider({
     [],
   );
 
+  const handlePriceRangeChange = useCallback(
+    (_event: React.SyntheticEvent | Event, value: number | number[]) => {
+      if (Array.isArray(value)) {
+        changePriceFilter(value[0], value[1]);
+      }
+    },
+    [changePriceFilter],
+  );
+
   return (
     <Slider
       getAriaLabel={getPriceRangeAriaLabel}
@@ -51,8 +65,8 @@ export default function PriceSlider({
       onChangeCommitted={handlePriceRangeChange}
       valueLabelDisplay="auto"
       marks={priceRangeMarks}
-      min={min}
-      max={max}
+      min={priceRange.min}
+      max={priceRange.max}
     />
   );
 }

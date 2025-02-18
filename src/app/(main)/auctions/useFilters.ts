@@ -78,6 +78,17 @@ export default function useFilters() {
     [changeSearchParams],
   );
 
+  const handlePriceChange = useCallback(
+    (fromPrice: number, toPrice: number) => {
+      const params = new URLSearchParams(searchParams);
+      params.delete(AuctionSearchParams.PAGE);
+      params.set(AuctionSearchParams.FROM_PRICE, fromPrice.toString());
+      params.set(AuctionSearchParams.TO_PRICE, toPrice.toString());
+      replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, replace, searchParams],
+  );
+
   const resetFilters = useCallback(() => {
     replace(`${pathname}`);
   }, [pathname, replace]);
@@ -89,6 +100,7 @@ export default function useFilters() {
     handleShowOnlyWhereUserTakePartChange,
     handleCardNameChange,
     handleLocationChange,
+    handlePriceChange,
     resetFilters,
   };
 }
