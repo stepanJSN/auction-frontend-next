@@ -2,6 +2,7 @@
 import { ROUTES } from "@/config/routesConfig";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import { Role } from "@/enums/role.enum";
 import { IGetUserPayload } from "@/interfaces/user.interfaces";
 import { userService } from "@/services/userService";
 import { AxiosError } from "axios";
@@ -28,6 +29,19 @@ export async function getUsersActions(
 export async function deleteUserAction(userId: string) {
   try {
     await userService.delete(userId);
+    revalidatePath(ROUTES.USERS);
+    return { status: MutationStatusEnum.SUCCESS };
+  } catch (error) {
+    return {
+      errorCode: (error as AxiosError).status,
+      status: MutationStatusEnum.ERROR,
+    };
+  }
+}
+
+export async function updateUserRoleAction(userId: string, role: Role) {
+  try {
+    await userService.changeRole(userId, role);
     revalidatePath(ROUTES.USERS);
     return { status: MutationStatusEnum.SUCCESS };
   } catch (error) {

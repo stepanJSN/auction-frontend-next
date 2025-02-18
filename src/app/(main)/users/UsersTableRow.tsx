@@ -2,15 +2,13 @@ import {
   TableRow,
   TableCell,
   Stack,
-  Button,
   SxProps,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import { IUserSummary } from "@/interfaces/user.interfaces";
-import { Role } from "@/enums/role.enum";
 import DeleteUserButton from "./DeleteUserButton";
+import UpdateUserRoleButton from "./UpdateUserRoleButton";
 
 type UsersTableRowProps = {
   user: IUserSummary;
@@ -41,13 +39,12 @@ export default function UsersTableRow({ user }: UsersTableRowProps) {
           spacing={1}
           sx={buttonsContainerStyles}
         >
-          <Button variant="outlined" disabled={false}>
-            {matches ? (
-              `Make ${user.role === Role.USER ? "admin" : "user"}`
-            ) : (
-              <AddModeratorIcon />
-            )}
-          </Button>
+          <UpdateUserRoleButton
+            isMobileVersion={matches}
+            userId={user.id}
+            userFullname={`${user.name} ${user.surname}`}
+            currentRole={user.role}
+          />
           <DeleteUserButton
             isMobileVersion={matches}
             userId={user.id}
