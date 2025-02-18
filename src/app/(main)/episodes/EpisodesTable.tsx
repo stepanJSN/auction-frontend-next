@@ -6,8 +6,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import EpisodesTableRow from "./EpisodesTableRow";
 
@@ -16,12 +14,9 @@ type EpisodesTableProps = {
 };
 
 export default function EpisodesTable({ episodes }: EpisodesTableProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
-
   return (
     <TableContainer>
-      <Table aria-label="episodes table" size={matches ? "medium" : "small"}>
+      <Table aria-label="episodes table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>

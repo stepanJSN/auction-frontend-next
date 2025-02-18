@@ -6,8 +6,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import LocationsTableRow from "./LocationsTableRow";
 
@@ -16,12 +14,9 @@ type LocationsTableProps = {
 };
 
 export default function LocationsTable({ locations }: LocationsTableProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
-
   return (
     <TableContainer>
-      <Table aria-label="locations table" size={matches ? "medium" : "small"}>
+      <Table aria-label="locations table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>

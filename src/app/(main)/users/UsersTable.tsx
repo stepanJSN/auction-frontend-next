@@ -4,8 +4,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import UsersTableRow from "./UsersTableRow";
 import { IUserSummary } from "@/interfaces/user.interfaces";
@@ -16,12 +14,9 @@ type UsersTableProps = {
 };
 
 export default function UsersTable({ users }: UsersTableProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
-
   return (
     <TableContainer>
-      <Table aria-label="users table" size={matches ? "medium" : "small"}>
+      <Table aria-label="users table">
         <TableHead>
           <TableRow>
             <TableCell>Name and surname</TableCell>

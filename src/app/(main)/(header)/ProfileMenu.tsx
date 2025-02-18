@@ -15,6 +15,7 @@ import Menu from "./Menu";
 import Link from "next/link";
 import { ROUTES } from "@/config/routesConfig";
 import { logoutAction } from "@/actions";
+import { showOnlyOnSmallScreenStyles } from "@/globalSxStyles";
 
 type ProfileMenuProps = {
   isMenuOpen: boolean;
@@ -23,7 +24,6 @@ type ProfileMenuProps = {
   isUserDataLoaded: boolean;
   username: string;
   isAdmin: boolean;
-  isBigScreen: boolean;
   menuItems: { label: string; path: string }[];
   balance: {
     available: number;
@@ -53,7 +53,6 @@ const StyledMenu = styled(MuiMenu)(() => ({
 export default function ProfileMenu({
   username,
   balance,
-  isBigScreen,
   rating,
   isUserDataLoaded,
   isAdmin,
@@ -65,12 +64,10 @@ export default function ProfileMenu({
   return (
     <StyledMenu anchorEl={anchorMenuEl} open={isMenuOpen} onClose={handleClose}>
       <List sx={containerStyles} dense>
-        {!isBigScreen && (
-          <Box onClick={handleClose}>
-            <Menu menuItems={menuItems} />
-            <Divider sx={dividerStyles} component="li" />
-          </Box>
-        )}
+        <Box onClick={handleClose} sx={showOnlyOnSmallScreenStyles}>
+          <Menu menuItems={menuItems} />
+          <Divider sx={dividerStyles} component="li" />
+        </Box>
         {!isUserDataLoaded && <CircularProgress />}
         {isUserDataLoaded && (
           <>

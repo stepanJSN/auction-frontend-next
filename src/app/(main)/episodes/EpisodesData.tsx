@@ -6,8 +6,6 @@ import PageError from "@/components/PageError";
 import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholder";
 import LoadMoreBtn from "@/components/LoadMoreBtn";
 import EpisodesTable from "./EpisodesTable";
-import useClient from "@/hooks/useClient";
-import PageLoader from "@/components/PageLoader";
 import useLoadMore from "@/hooks/useLoadMore";
 import { getMoreEpisodesAction } from "./episodes.actions";
 
@@ -32,11 +30,6 @@ export default function EpisodesData({
     hasMore: hasMore,
     getMore: getMoreEpisodesAction,
   });
-  const isClient = useClient();
-
-  if (!isClient) {
-    return <PageLoader />;
-  }
 
   return (
     <>
