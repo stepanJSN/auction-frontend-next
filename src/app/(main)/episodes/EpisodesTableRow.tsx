@@ -6,6 +6,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import { useCallback } from "react";
 import { deleteEpisodeAction } from "./episodes.actions";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 type EpisodesTableRowProps = {
   episode: IEpisode;
@@ -16,17 +20,6 @@ const rowStyles: SxProps = {
 };
 const buttonsContainerStyles: SxProps = {
   justifyContent: "flex-end",
-};
-const showOnlyOnBigScreenStyles: SxProps = {
-  display: {
-    xs: "none",
-    lg: "initial",
-  },
-};
-const showOnlyOnSmallScreenStyles: SxProps = {
-  display: {
-    lg: "none",
-  },
 };
 
 export default function EpisodesTableRow({ episode }: EpisodesTableRowProps) {

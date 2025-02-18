@@ -20,6 +20,10 @@ import { selectUser } from "@/lib/features/user/userSlice";
 import { Role } from "@/enums/role.enum";
 import { adminMenu, userMenu } from "@/config/menuConfig";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 const HeaderStyled = styled(Grid2)<Grid2Props>(({ theme }) => ({
   position: "relative",
@@ -39,19 +43,6 @@ const logoGridStyles: Grid2Props = {
   size: {
     xs: "grow",
     md: 2,
-  },
-};
-
-const showOnlyOnBigScreenStyles: SxProps = {
-  display: {
-    xs: "none",
-    lg: "initial",
-  },
-};
-
-const showOnlyOnSmallScreenStyle: SxProps = {
-  display: {
-    lg: "none",
   },
 };
 
@@ -82,7 +73,7 @@ export default function Header() {
         </Grid2>
         <Grid2 display="flex" justifyContent="end" size="grow">
           <Button
-            sx={showOnlyOnSmallScreenStyle}
+            sx={showOnlyOnSmallScreenStyles}
             variant="contained"
             color="secondary"
             onClick={handleMenuClick}

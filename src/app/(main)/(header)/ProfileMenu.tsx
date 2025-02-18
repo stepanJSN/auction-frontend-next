@@ -15,6 +15,7 @@ import Menu from "./Menu";
 import Link from "next/link";
 import { ROUTES } from "@/config/routesConfig";
 import { logoutAction } from "@/actions";
+import { showOnlyOnSmallScreenStyles } from "@/globalSxStyles";
 
 type ProfileMenuProps = {
   isMenuOpen: boolean;
@@ -49,12 +50,6 @@ const StyledMenu = styled(MuiMenu)(() => ({
   },
 }));
 
-const showOnlyOnSmallScreenStyle: SxProps = {
-  display: {
-    lg: "none",
-  },
-};
-
 export default function ProfileMenu({
   username,
   balance,
@@ -69,7 +64,7 @@ export default function ProfileMenu({
   return (
     <StyledMenu anchorEl={anchorMenuEl} open={isMenuOpen} onClose={handleClose}>
       <List sx={containerStyles} dense>
-        <Box onClick={handleClose} sx={showOnlyOnSmallScreenStyle}>
+        <Box onClick={handleClose} sx={showOnlyOnSmallScreenStyles}>
           <Menu menuItems={menuItems} />
           <Divider sx={dividerStyles} component="li" />
         </Box>

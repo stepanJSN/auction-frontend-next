@@ -4,15 +4,17 @@ import { useSnackbar } from "notistack";
 import { useCallback, useState } from "react";
 import { deleteUserAction } from "./users.actions";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 type DeleteUserButtonProps = {
-  isMobileVersion: boolean;
   userId: string;
   userFullname: string;
 };
 
 export default function DeleteUserButton({
-  isMobileVersion,
   userId,
   userFullname,
 }: DeleteUserButtonProps) {
@@ -35,13 +37,25 @@ export default function DeleteUserButton({
   }, [enqueueSnackbar, userFullname, userId]);
 
   return (
-    <Button
-      variant="outlined"
-      color="error"
-      disabled={isPending}
-      onClick={handleUserDelete}
-    >
-      {isMobileVersion ? "Delete" : <DeleteIcon />}
-    </Button>
+    <>
+      <Button
+        variant="outlined"
+        color="error"
+        disabled={isPending}
+        onClick={handleUserDelete}
+        sx={showOnlyOnBigScreenStyles}
+      >
+        Delete
+      </Button>
+      <Button
+        variant="outlined"
+        color="error"
+        disabled={isPending}
+        onClick={handleUserDelete}
+        sx={showOnlyOnSmallScreenStyles}
+      >
+        <DeleteIcon />
+      </Button>
+    </>
   );
 }

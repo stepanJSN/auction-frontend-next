@@ -5,16 +5,18 @@ import { useCallback, useState } from "react";
 import { updateUserRoleAction } from "./users.actions";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { Role } from "@/enums/role.enum";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 type UpdateUserRoleButtonProps = {
-  isMobileVersion: boolean;
   userId: string;
   userFullname: string;
   currentRole: Role;
 };
 
 export default function UpdateUserRoleButton({
-  isMobileVersion,
   userId,
   userFullname,
   currentRole,
@@ -41,12 +43,23 @@ export default function UpdateUserRoleButton({
   }, [currentRole, enqueueSnackbar, userFullname, userId]);
 
   return (
-    <Button variant="outlined" disabled={isPending} onClick={handleRoleUpdate}>
-      {isMobileVersion ? (
-        `Make ${currentRole === Role.USER ? "admin" : "user"}`
-      ) : (
+    <>
+      <Button
+        variant="outlined"
+        disabled={isPending}
+        onClick={handleRoleUpdate}
+        sx={showOnlyOnBigScreenStyles}
+      >
+        {`Make ${currentRole === Role.USER ? "admin" : "user"}`}
+      </Button>
+      <Button
+        variant="outlined"
+        disabled={isPending}
+        onClick={handleRoleUpdate}
+        sx={showOnlyOnSmallScreenStyles}
+      >
         <AddModeratorIcon />
-      )}
-    </Button>
+      </Button>
+    </>
   );
 }
