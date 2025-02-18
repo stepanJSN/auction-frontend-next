@@ -6,6 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import StoreProvider from "./StoreProvider";
 import { SessionProvider } from "next-auth/react";
+import { SnackbarProvider } from "notistack";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,8 +14,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <SessionProvider>
         <StoreProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <CssBaseline />
-            {children}
+            <SnackbarProvider>
+              <CssBaseline />
+              {children}
+            </SnackbarProvider>
           </LocalizationProvider>
         </StoreProvider>
       </SessionProvider>

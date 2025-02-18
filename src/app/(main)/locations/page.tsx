@@ -10,7 +10,7 @@ export default async function LocationsPage(props: {
   }>;
 }) {
   const searchLocationName = (await props.searchParams)?.locationName;
-  const { locations } = await locationsService.getAll({
+  const { data: locations } = await locationsService.getAll({
     name: searchLocationName,
   });
 

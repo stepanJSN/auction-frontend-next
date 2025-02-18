@@ -10,7 +10,7 @@ export default async function EpisodesPage(props: {
   }>;
 }) {
   const searchEpisodeName = (await props.searchParams)?.episodeName;
-  const { episodes } = await episodesService.getAll({
+  const { data: episodes } = await episodesService.getAll({
     name: searchEpisodeName,
   });
 
