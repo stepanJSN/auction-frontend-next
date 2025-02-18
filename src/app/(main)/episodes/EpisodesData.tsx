@@ -6,9 +6,10 @@ import PageError from "@/components/PageError";
 import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholder";
 import LoadMoreBtn from "@/components/LoadMoreBtn";
 import EpisodesTable from "./EpisodesTable";
-import useEpisodes from "./useEpisodes";
 import useClient from "@/hooks/useClient";
 import PageLoader from "@/components/PageLoader";
+import useLoadMore from "@/hooks/useLoadMore";
+import { getMoreEpisodesAction } from "./episodes.actions";
 
 type EpisodesDataProps = {
   initialEpisodes: IEpisode[];
@@ -21,10 +22,15 @@ export default function EpisodesData({
   searchEpisodeName,
   hasMore,
 }: EpisodesDataProps) {
-  const { episodes, episodesState, handleLoadMore } = useEpisodes({
-    initialEpisodes,
-    searchEpisodeName,
-    hasMore,
+  const {
+    data: episodes,
+    queryStatus: episodesState,
+    handleLoadMore,
+  } = useLoadMore({
+    initialData: initialEpisodes,
+    searchParams: searchEpisodeName,
+    hasMore: hasMore,
+    getMore: getMoreEpisodesAction,
   });
   const isClient = useClient();
 

@@ -22,7 +22,7 @@ export const episodesService = {
             params,
           },
         );
-        return { episodes: episodes.data, status: QueryStatusEnum.SUCCESS };
+        return { data: episodes.data, status: QueryStatusEnum.SUCCESS };
       } catch {
         return { status: QueryStatusEnum.ERROR };
       }
