@@ -1,19 +1,15 @@
 import { ROUTES } from "@/config/routesConfig";
 import { IEpisode } from "@/interfaces/episodes.interfaces";
-import {
-  TableRow,
-  TableCell,
-  Stack,
-  Button,
-  SxProps,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { TableRow, TableCell, Stack, Button, SxProps } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import { useCallback } from "react";
 import { deleteEpisodeAction } from "./episodes.actions";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 type EpisodesTableRowProps = {
   episode: IEpisode;
@@ -27,8 +23,6 @@ const buttonsContainerStyles: SxProps = {
 };
 
 export default function EpisodesTableRow({ episode }: EpisodesTableRowProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const deleteEpisode = useCallback(
     () => deleteEpisodeAction(episode.id),
     [episode.id],
@@ -52,11 +46,33 @@ export default function EpisodesTableRow({ episode }: EpisodesTableRowProps) {
               variant="outlined"
               component={Link}
               href={ROUTES.EDIT_EPISODE(episode.id)}
+              sx={showOnlyOnBigScreenStyles}
             >
-              {matches ? "Edit" : <EditIcon />}
+              Edit
             </Button>
-            <Button variant="outlined" color="error" onClick={deleteEpisode}>
-              {matches ? "Delete" : <DeleteIcon />}
+            <Button
+              variant="outlined"
+              component={Link}
+              href={ROUTES.EDIT_EPISODE(episode.id)}
+              sx={showOnlyOnSmallScreenStyles}
+            >
+              <EditIcon />
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={deleteEpisode}
+              sx={showOnlyOnBigScreenStyles}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={deleteEpisode}
+              sx={showOnlyOnSmallScreenStyles}
+            >
+              <DeleteIcon />
             </Button>
           </Stack>
         </TableCell>

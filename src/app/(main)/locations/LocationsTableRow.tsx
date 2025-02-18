@@ -1,19 +1,15 @@
 import { ROUTES } from "@/config/routesConfig";
 import { ILocation } from "@/interfaces/locations.interfaces";
-import {
-  TableRow,
-  TableCell,
-  Stack,
-  Button,
-  SxProps,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { TableRow, TableCell, Stack, Button, SxProps } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import { useCallback } from "react";
 import { deleteLocationAction } from "./locations.actions";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 type LocationsTableRowProps = {
   location: ILocation;
@@ -29,8 +25,6 @@ const buttonsContainerStyles: SxProps = {
 export default function LocationsTableRow({
   location,
 }: LocationsTableRowProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const deleteLocation = useCallback(
     () => deleteLocationAction(location.id),
     [location.id],
@@ -54,11 +48,33 @@ export default function LocationsTableRow({
               variant="outlined"
               component={Link}
               href={ROUTES.EDIT_LOCATION(location.id)}
+              sx={showOnlyOnBigScreenStyles}
             >
-              {matches ? "Edit" : <EditIcon />}
+              Edit
             </Button>
-            <Button variant="outlined" color="error" onClick={deleteLocation}>
-              {matches ? "Delete" : <DeleteIcon />}
+            <Button
+              variant="outlined"
+              component={Link}
+              href={ROUTES.EDIT_LOCATION(location.id)}
+              sx={showOnlyOnSmallScreenStyles}
+            >
+              <EditIcon />
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={deleteLocation}
+              sx={showOnlyOnBigScreenStyles}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={deleteLocation}
+              sx={showOnlyOnSmallScreenStyles}
+            >
+              <DeleteIcon />
             </Button>
           </Stack>
         </TableCell>

@@ -1,11 +1,4 @@
-import {
-  TableRow,
-  TableCell,
-  Stack,
-  SxProps,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { TableRow, TableCell, Stack, SxProps } from "@mui/material";
 import { IUserSummary } from "@/interfaces/user.interfaces";
 import DeleteUserButton from "./DeleteUserButton";
 import UpdateUserRoleButton from "./UpdateUserRoleButton";
@@ -22,9 +15,6 @@ const buttonsContainerStyles: SxProps = {
 };
 
 export default function UsersTableRow({ user }: UsersTableRowProps) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
-
   return (
     <TableRow sx={rowStyles}>
       <TableCell component="th" scope="row">
@@ -40,13 +30,11 @@ export default function UsersTableRow({ user }: UsersTableRowProps) {
           sx={buttonsContainerStyles}
         >
           <UpdateUserRoleButton
-            isMobileVersion={matches}
             userId={user.id}
             userFullname={`${user.name} ${user.surname}`}
             currentRole={user.role}
           />
           <DeleteUserButton
-            isMobileVersion={matches}
             userId={user.id}
             userFullname={`${user.name} ${user.surname}`}
           />

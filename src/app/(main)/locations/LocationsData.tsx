@@ -6,8 +6,6 @@ import PageError from "@/components/PageError";
 import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholder";
 import LoadMoreBtn from "@/components/LoadMoreBtn";
 import LocationsTable from "./LocationsTable";
-import useClient from "@/hooks/useClient";
-import PageLoader from "@/components/PageLoader";
 import useLoadMore from "@/hooks/useLoadMore";
 import { getMoreLocationsAction } from "./locations.actions";
 
@@ -32,11 +30,6 @@ export default function LocationsData({
     hasMore: hasMore,
     getMore: getMoreLocationsAction,
   });
-  const isClient = useClient();
-
-  if (!isClient) {
-    return <PageLoader />;
-  }
 
   return (
     <>

@@ -8,8 +8,6 @@ import {
   SxProps,
   Theme,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import Menu from "./Menu";
 import ProfileMenu from "./ProfileMenu";
@@ -22,6 +20,10 @@ import { selectUser } from "@/lib/features/user/userSlice";
 import { Role } from "@/enums/role.enum";
 import { adminMenu, userMenu } from "@/config/menuConfig";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import {
+  showOnlyOnBigScreenStyles,
+  showOnlyOnSmallScreenStyles,
+} from "@/globalSxStyles";
 
 const HeaderStyled = styled(Grid2)<Grid2Props>(({ theme }) => ({
   position: "relative",
@@ -40,7 +42,7 @@ const logoStyles: SxProps<Theme> = (theme: Theme) => ({
 const logoGridStyles: Grid2Props = {
   size: {
     xs: "grow",
-    md: 3,
+    md: 2,
   },
 };
 
@@ -49,8 +51,6 @@ export default function Header() {
     useSelector(selectUser);
   const { anchorMenuEl, isMenuOpen, handleMenuClick, handleMenuClose } =
     useMenu();
-  const theme = useTheme();
-  const isBigScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const menuItems = useMemo(
     () => (role === Role.USER ? userMenu : adminMenu),
@@ -68,18 +68,25 @@ export default function Header() {
         <Grid2 {...logoGridStyles}>
           <Typography sx={logoStyles}>Rick & Morty cards</Typography>
         </Grid2>
-        {isBigScreen && (
-          <Grid2 size={8}>
-            <Menu menuItems={menuItems} />
-          </Grid2>
-        )}
+        <Grid2 sx={showOnlyOnBigScreenStyles} size={8}>
+          <Menu menuItems={menuItems} />
+        </Grid2>
         <Grid2 display="flex" justifyContent="end" size="grow">
           <Button
+            sx={showOnlyOnSmallScreenStyles}
             variant="contained"
             color="secondary"
             onClick={handleMenuClick}
           >
-            {isBigScreen ? "Profile" : <MenuIcon />}
+            <MenuIcon />
+          </Button>
+          <Button
+            sx={showOnlyOnBigScreenStyles}
+            variant="contained"
+            color="secondary"
+            onClick={handleMenuClick}
+          >
+            Profile
           </Button>
         </Grid2>
         <ProfileMenu
@@ -91,7 +98,6 @@ export default function Header() {
           username={`${name} ${surname}`}
           balance={balance!}
           rating={rating}
-          isBigScreen={isBigScreen}
           isAdmin={role === Role.ADMIN}
         />
       </HeaderStyled>
