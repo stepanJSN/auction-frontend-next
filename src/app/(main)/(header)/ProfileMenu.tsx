@@ -23,7 +23,6 @@ type ProfileMenuProps = {
   isUserDataLoaded: boolean;
   username: string;
   isAdmin: boolean;
-  isBigScreen: boolean;
   menuItems: { label: string; path: string }[];
   balance: {
     available: number;
@@ -50,10 +49,15 @@ const StyledMenu = styled(MuiMenu)(() => ({
   },
 }));
 
+const showOnlyOnSmallScreenStyle: SxProps = {
+  display: {
+    lg: "none",
+  },
+};
+
 export default function ProfileMenu({
   username,
   balance,
-  isBigScreen,
   rating,
   isUserDataLoaded,
   isAdmin,
@@ -65,12 +69,10 @@ export default function ProfileMenu({
   return (
     <StyledMenu anchorEl={anchorMenuEl} open={isMenuOpen} onClose={handleClose}>
       <List sx={containerStyles} dense>
-        {!isBigScreen && (
-          <Box onClick={handleClose}>
-            <Menu menuItems={menuItems} />
-            <Divider sx={dividerStyles} component="li" />
-          </Box>
-        )}
+        <Box onClick={handleClose} sx={showOnlyOnSmallScreenStyle}>
+          <Menu menuItems={menuItems} />
+          <Divider sx={dividerStyles} component="li" />
+        </Box>
         {!isUserDataLoaded && <CircularProgress />}
         {isUserDataLoaded && (
           <>
