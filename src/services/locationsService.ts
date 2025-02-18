@@ -22,7 +22,7 @@ export const locationsService = {
             params,
           },
         );
-        return { locations: locations.data, status: QueryStatusEnum.SUCCESS };
+        return { data: locations.data, status: QueryStatusEnum.SUCCESS };
       } catch {
         return { status: QueryStatusEnum.ERROR };
       }

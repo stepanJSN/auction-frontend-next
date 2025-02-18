@@ -6,9 +6,10 @@ import PageError from "@/components/PageError";
 import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholder";
 import LoadMoreBtn from "@/components/LoadMoreBtn";
 import LocationsTable from "./LocationsTable";
-import useLocations from "./useLocations";
 import useClient from "@/hooks/useClient";
 import PageLoader from "@/components/PageLoader";
+import useLoadMore from "@/hooks/useLoadMore";
+import { getMoreLocationsAction } from "./locations.actions";
 
 type LocationsDataProps = {
   initialLocations: ILocation[];
@@ -21,10 +22,15 @@ export default function LocationsData({
   searchLocationName,
   hasMore,
 }: LocationsDataProps) {
-  const { locations, locationsState, handleLoadMore } = useLocations({
-    initialLocations,
-    searchLocationName,
-    hasMore,
+  const {
+    data: locations,
+    queryStatus: locationsState,
+    handleLoadMore,
+  } = useLoadMore({
+    initialData: initialLocations,
+    searchParams: searchLocationName,
+    hasMore: hasMore,
+    getMore: getMoreLocationsAction,
   });
   const isClient = useClient();
 
