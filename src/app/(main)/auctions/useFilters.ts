@@ -2,8 +2,6 @@ import { SelectChangeEvent } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { AuctionSearchParams } from "./auctionsSearchParams.enum";
-import { ILocation } from "@/interfaces/locations.interfaces";
-import { getLocationsByNameAction } from "@/actions";
 
 export default function useFilters() {
   const pathname = usePathname();
@@ -15,6 +13,16 @@ export default function useFilters() {
       const params = new URLSearchParams(searchParams);
       params.delete(AuctionSearchParams.PAGE);
       params.set(name, value);
+      replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, replace, searchParams],
+  );
+
+  const removeSearchParams = useCallback(
+    (name: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.delete(AuctionSearchParams.PAGE);
+      params.delete(name);
       replace(`${pathname}?${params.toString()}`);
     },
     [pathname, replace, searchParams],
@@ -41,18 +49,26 @@ export default function useFilters() {
     [changeSearchParams],
   );
 
+  const handleLocationChange = useCallback(
+    (locationId: string | null) => {
+      if (!locationId) {
+        removeSearchParams(AuctionSearchParams.LOCATION);
+        return;
+      }
+      changeSearchParams(AuctionSearchParams.LOCATION, locationId);
+    },
+    [changeSearchParams, removeSearchParams],
+  );
+
   const handleShowOnlyWhereUserTakePartChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.checked) {
-        const params = new URLSearchParams(searchParams);
-        params.delete(AuctionSearchParams.PAGE);
-        params.delete(AuctionSearchParams.IS_USER_TAKE_PART);
-        replace(`${pathname}?${params.toString()}`);
+        removeSearchParams(AuctionSearchParams.IS_USER_TAKE_PART);
         return;
       }
       changeSearchParams(AuctionSearchParams.IS_USER_TAKE_PART, "true");
     },
-    [changeSearchParams, pathname, replace, searchParams],
+    [changeSearchParams, removeSearchParams],
   );
 
   const handleCardNameChange = useCallback(
@@ -66,22 +82,13 @@ export default function useFilters() {
     replace(`${pathname}`);
   }, [pathname, replace]);
 
-  const getLocationLabel = useCallback((location: ILocation | null) => {
-    return location ? location.name : "";
-  }, []);
-
-  const searchLocation = useCallback((searchValue: string) => {
-    return getLocationsByNameAction(searchValue);
-  }, []);
-
   return {
     handleTypeChange,
     handleSortByChange,
     handleSortOrderChange,
     handleShowOnlyWhereUserTakePartChange,
     handleCardNameChange,
+    handleLocationChange,
     resetFilters,
-    getLocationLabel,
-    searchLocation,
   };
 }

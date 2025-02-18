@@ -13,6 +13,7 @@ import useSidebarVisibility from "@/hooks/useSidebarVisibility";
 import { AuctionSearchParams } from "./auctionsSearchParams.enum";
 import useFilters from "./useFilters";
 import DebouncedInput from "@/components/DebouncedInput";
+import LocationFilter from "./LocationFilter";
 
 const sortByOptions = [
   { value: AuctionSortByEnum.CREATION_DATE, label: "Creation date" },
@@ -49,7 +50,7 @@ export default function AuctionsFilters() {
 
   const auctionType =
     searchParams.get(AuctionSearchParams.TYPE) || AuctionTypeEnum.AVAILABLE;
-  // const auctionLocation = searchParams.get(AuctionSearchParams.LOCATION);
+  const auctionLocationId = searchParams.get(AuctionSearchParams.LOCATION);
   const cardName = searchParams.get(AuctionSearchParams.CARD_NAME);
   const isUserTakePart = !!searchParams.get(
     AuctionSearchParams.IS_USER_TAKE_PART,
@@ -69,9 +70,8 @@ export default function AuctionsFilters() {
     handleShowOnlyWhereUserTakePartChange,
     handleSortByChange,
     handleSortOrderChange,
+    handleLocationChange,
     resetFilters,
-    // searchLocation,
-    // getLocationLabel,
   } = useFilters();
 
   return (
@@ -90,17 +90,14 @@ export default function AuctionsFilters() {
             options={auctionsTypeOptions}
             handleChange={handleTypeChange}
           />
-          {/* <Autocomplete
-            label="Location"
-            searchFunc={searchLocation}
-            value={auctionLocation}
-            getLabel={getLocationLabel}
-            onChange={handleLocationChange}
-          /> */}
           <DebouncedInput
             defaultValue={cardName ?? undefined}
             label="Card name"
             handleDebouncedChange={handleCardNameChange}
+          />
+          <LocationFilter
+            locationId={auctionLocationId}
+            changeLocationId={handleLocationChange}
           />
           {/* {auctionType === AuctionTypeEnum.AVAILABLE &&
             filters.price.max !== null &&

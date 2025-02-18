@@ -1,6 +1,6 @@
 export enum AuctionSearchParams {
   TYPE = "type",
-  LOCATION = "location",
+  LOCATION = "locationId",
   PAGE = "page",
   CARD_NAME = "cardName",
   PRICE_RANGE = "priceRange",

@@ -3,6 +3,7 @@
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { IGetAuctionsPayload } from "@/interfaces/auctions.interfaces";
 import { auctionService } from "@/services/auctionService";
+import { locationsService } from "@/services/locationsService";
 
 export async function getPriceRangeAction() {
   try {
@@ -19,4 +20,8 @@ export async function getAuctionsAction(payload?: IGetAuctionsPayload) {
   } catch {
     return { status: QueryStatusEnum.ERROR };
   }
+}
+
+export async function getLocationByIdAction(locationId: number) {
+  return locationsService.getOne(locationId);
 }
