@@ -1,7 +1,6 @@
 "use server";
 
 import { episodesService } from "@/services/episodesService";
-import { locationsService } from "@/services/locationsService";
 import { ICardFrom } from "@/interfaces/cards.interface";
 import { cardsService } from "@/services/cardsService";
 import { redirect } from "next/navigation";
@@ -11,10 +10,6 @@ import { revalidatePath } from "next/cache";
 
 export async function getEpisodesByNameAction(episodeName: string) {
   return episodesService.getAll({ name: episodeName });
-}
-
-export async function getLocationsByNameAction(locationName: string) {
-  return locationsService.getAll({ name: locationName });
 }
 
 export async function createCardAction(data: ICardFrom) {
