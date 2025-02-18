@@ -1,15 +1,15 @@
 import { Typography } from "@mui/material";
 import UsersFilters from "./UsersFilters";
 import { IGetUserPayload } from "@/interfaces/user.interfaces";
-import { userService } from "@/services/userService";
 import PageError from "@/components/PageError";
 import UsersData from "./UsersData";
+import { getUsersActions } from "./users.actions";
 
 export default async function UsersPage(props: {
   searchParams?: Promise<Omit<IGetUserPayload, "page">>;
 }) {
   const searchParams = await props.searchParams;
-  const { data: users } = await userService.getAll({
+  const { data: users } = await getUsersActions(1, {
     sortOrder: searchParams?.sortOrder,
     sortType: searchParams?.sortType,
     isAdmin: searchParams?.isAdmin,

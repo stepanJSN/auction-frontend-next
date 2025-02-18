@@ -7,10 +7,10 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import { IUserSummary } from "@/interfaces/user.interfaces";
 import { Role } from "@/enums/role.enum";
+import DeleteUserButton from "./DeleteUserButton";
 
 type UsersTableRowProps = {
   user: IUserSummary;
@@ -28,33 +28,33 @@ export default function UsersTableRow({ user }: UsersTableRowProps) {
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
-    <>
-      <TableRow sx={rowStyles}>
-        <TableCell component="th" scope="row">
-          {`${user.name} ${user.surname}`}
-        </TableCell>
-        <TableCell align="right">{user.role}</TableCell>
-        <TableCell align="right">{user.rating >= 0 && user.rating}</TableCell>
-        <TableCell align="right">
-          <Stack
-            component={"span"}
-            direction="row"
-            spacing={1}
-            sx={buttonsContainerStyles}
-          >
-            <Button variant="outlined" disabled={false}>
-              {matches ? (
-                `Make ${user.role === Role.USER ? "admin" : "user"}`
-              ) : (
-                <AddModeratorIcon />
-              )}
-            </Button>
-            <Button variant="outlined" color="error" disabled={false}>
-              {matches ? "Delete" : <DeleteIcon />}
-            </Button>
-          </Stack>
-        </TableCell>
-      </TableRow>
-    </>
+    <TableRow sx={rowStyles}>
+      <TableCell component="th" scope="row">
+        {`${user.name} ${user.surname}`}
+      </TableCell>
+      <TableCell align="right">{user.role}</TableCell>
+      <TableCell align="right">{user.rating >= 0 && user.rating}</TableCell>
+      <TableCell align="right">
+        <Stack
+          component={"span"}
+          direction="row"
+          spacing={1}
+          sx={buttonsContainerStyles}
+        >
+          <Button variant="outlined" disabled={false}>
+            {matches ? (
+              `Make ${user.role === Role.USER ? "admin" : "user"}`
+            ) : (
+              <AddModeratorIcon />
+            )}
+          </Button>
+          <DeleteUserButton
+            isMobileVersion={matches}
+            userId={user.id}
+            userFullname={`${user.name} ${user.surname}`}
+          />
+        </Stack>
+      </TableCell>
+    </TableRow>
   );
 }

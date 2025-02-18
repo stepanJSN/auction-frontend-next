@@ -1,7 +1,7 @@
 "use client";
 import useLoadMore from "@/hooks/useLoadMore";
 import { IGetUserPayload, IUserSummary } from "@/interfaces/user.interfaces";
-import { getMoreUsersActions } from "./users.actions";
+import { getUsersActions } from "./users.actions";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import PageError from "@/components/PageError";
 import LoadMoreBtn from "@/components/LoadMoreBtn";
@@ -30,7 +30,7 @@ export default function UsersData({
     initialData: initialUsers,
     searchParams: filters,
     hasMore: hasMore,
-    getMore: getMoreUsersActions,
+    getMore: getUsersActions,
   });
   const isClient = useClient();
 
