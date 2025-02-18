@@ -1,7 +1,7 @@
 import { Grid2, Typography } from "@mui/material";
-import AuctionsFilters from "./AuctionsFilters";
+import AuctionsFilters from "./_components/AuctionsFilters";
 import { IGetAuctionsPayload } from "@/interfaces/auctions.interfaces";
-import AuctionData from "./AuctionData";
+import AuctionData from "./_components/AuctionData";
 
 const filterGridBreakpoints = {
   xs: 0,

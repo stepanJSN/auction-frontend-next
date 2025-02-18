@@ -2,7 +2,7 @@ import { getLocationsByNameAction } from "@/actions";
 import Autocomplete from "@/components/Autocomplete";
 import { ILocation } from "@/interfaces/locations.interfaces";
 import { useCallback, useEffect, useState } from "react";
-import { getLocationByIdAction } from "./auctions.actions";
+import { getLocationByIdAction } from "../auctions.actions";
 
 type LocationFilter = {
   locationId: string | null;

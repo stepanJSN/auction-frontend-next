@@ -4,8 +4,8 @@ import AuctionCard from "./AuctionCard";
 import Link from "next/link";
 import { ROUTES } from "@/config/routesConfig";
 import { IAuctionSummary } from "@/interfaces/auctions.interfaces";
-import useAuctions from "./useAuctions";
-import useAuctionsUpdateListener from "./useAuctionsUpdateListener";
+import useAuctions from "../useAuctions";
+import useAuctionsUpdateListener from "../useAuctionsUpdateListener";
 
 type AuctionsGridProps = {
   initialAuctions: IAuctionSummary[];

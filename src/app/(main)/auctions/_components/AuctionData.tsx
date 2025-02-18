@@ -1,5 +1,5 @@
 import { IGetAuctionsPayload } from "@/interfaces/auctions.interfaces";
-import { getAuctionsAction } from "./auctions.actions";
+import { getAuctionsAction } from "../auctions.actions";
 import PageError from "@/components/PageError";
 import { notFound } from "next/navigation";
 import { Typography } from "@mui/material";

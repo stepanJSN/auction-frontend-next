@@ -1,6 +1,6 @@
 import { Slider } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { getPriceRangeAction } from "./auctions.actions";
+import { getPriceRangeAction } from "../auctions.actions";
 
 type PriceSliderProps = {
   fromPrice: number | null;
