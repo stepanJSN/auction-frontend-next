@@ -6,7 +6,7 @@ import {
   AuctionSortByEnum,
   AuctionTypeEnum,
 } from "@/interfaces/auctions.interfaces";
-import { Stack, Button, SxProps, Slide } from "@mui/material";
+import { Stack, Button, SxProps, Slide, Box } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import ChangeFiltersVisibilityBtn from "./ChangeFiltersVisibilityBtn";
 import useSidebarVisibility from "@/hooks/useSidebarVisibility";
@@ -46,6 +46,12 @@ const filterStyles: SxProps = {
   zIndex: 1,
 };
 
+const toggleFilterContainerStyles = {
+  display: {
+    md: "none",
+  },
+};
+
 export default function AuctionsFilters() {
   const searchParams = useSearchParams();
 
@@ -64,7 +70,7 @@ export default function AuctionsFilters() {
   const fromPrice = searchParams.get(AuctionSearchParams.FROM_PRICE) || 0;
   const toPrice = searchParams.get(AuctionSearchParams.TO_PRICE) || 0;
 
-  const { isSidebarOpen, isMobileVersion, toggleSidebarVisibility, ref } =
+  const { isSidebarOpen, toggleSidebarVisibility, ref } =
     useSidebarVisibility("md");
 
   const {
@@ -80,12 +86,12 @@ export default function AuctionsFilters() {
 
   return (
     <>
-      {isMobileVersion && (
+      <Box sx={toggleFilterContainerStyles}>
         <ChangeFiltersVisibilityBtn
           toggleSidebarVisibility={toggleSidebarVisibility}
           isSidebarOpen={isSidebarOpen}
         />
-      )}
+      </Box>
       <Slide ref={ref} appear={false} in={isSidebarOpen} direction="right">
         <Stack spacing={1} sx={filterStyles}>
           <Select
