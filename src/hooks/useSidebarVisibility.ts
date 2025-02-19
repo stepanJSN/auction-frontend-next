@@ -24,7 +24,6 @@ export default function useSidebarVisibility(
 
   return {
     isSidebarOpen: isMobileVersion ? isSidebarOpen : true,
-    isMobileVersion,
     toggleSidebarVisibility,
     ref,
   };
