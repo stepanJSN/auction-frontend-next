@@ -90,7 +90,10 @@ export default function EditAuctionForm({
           >
             {isSubmitting ? "Updating..." : "Update"}
           </Button>
-          <DeleteAuctionButton auctionId={auctionId} />
+          <DeleteAuctionButton
+            auctionId={auctionId}
+            isDisabled={isFormInactive}
+          />
         </Stack>
       </Grid2>
     </Grid2>

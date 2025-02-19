@@ -2,7 +2,7 @@ import { IAuctionSummary } from "@/interfaces/auctions.interfaces";
 import { useEffect } from "react";
 import { IAuctionEvent } from "./auctionEvents.interfaces";
 import { AuctionEventEnum } from "./auctionEventEnum";
-import useSocket from "@/hooks/useSocket";
+import { useSocket } from "@/provider/SocketProvider";
 
 type useAuctionsUpdateListenerParams = {
   auctions: IAuctionSummary[];
@@ -32,13 +32,13 @@ export default function useAuctionsUpdateListener({
           break;
       }
     };
-    if (auctions.length > 0) {
+    if (auctions.length > 0 && socket) {
       auctions.forEach((auction) => {
         socket.on(`auction-${auction.id}`, handleEvent);
       });
     }
     return () => {
-      if (auctions.length > 0) {
+      if (auctions.length > 0 && socket) {
         auctions.forEach((auction) => {
           socket.off(`auction-${auction.id}`, handleEvent);
         });

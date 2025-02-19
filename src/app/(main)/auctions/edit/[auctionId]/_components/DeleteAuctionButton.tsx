@@ -6,10 +6,12 @@ import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 type DeleteAuctionButtonProps = {
   auctionId: string;
+  isDisabled: boolean;
 };
 
 export default function DeleteAuctionButton({
   auctionId,
+  isDisabled,
 }: DeleteAuctionButtonProps) {
   const [isPending, setIsPending] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +28,7 @@ export default function DeleteAuctionButton({
 
   return (
     <Button
-      disabled={isPending}
+      disabled={isPending || isDisabled}
       color="error"
       onClick={handleDelete}
       variant="contained"
