@@ -1,7 +1,6 @@
 "use client";
 import { Container, Stack, SxProps } from "@mui/material";
 import useUserData from "./useUserData";
-import useWebsocket from "./useWebsocket";
 import Header from "./(header)/Header";
 import Footer from "./Footer";
 
@@ -21,7 +20,6 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   useUserData();
-  useWebsocket();
 
   return (
     <Stack sx={globalWrapperStyles}>

@@ -5,7 +5,7 @@ import { useDebounceCallback } from "usehooks-ts";
 
 type DebouncedInputProps = {
   label: string;
-  defaultValue: string;
+  defaultValue?: string;
   handleDebouncedChange: (value: string) => void;
 };
 

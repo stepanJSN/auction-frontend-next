@@ -11,8 +11,8 @@ import React, { useCallback } from "react";
 import EpisodesListForm from "./EpisodesListForm";
 import { Control, FieldErrors } from "react-hook-form";
 import { ILocation } from "@/interfaces/locations.interfaces";
-import { getLocationsByNameAction } from "./cards.actions";
 import { ICardFrom } from "@/interfaces/cards.interface";
+import { getLocationsByNameAction } from "@/actions";
 
 type CardFormInputsProps = {
   control: Control<ICardFrom>;

@@ -1,6 +1,6 @@
-import { SortOrderEnum } from '../enums/sortOrder.enum';
-import { ICard } from './cards.interface';
-import { IPagination } from './pagination.interface';
+import { SortOrderEnum } from "../enums/sortOrder.enum";
+import { ICard } from "./cards.interface";
+import { IPagination } from "./pagination.interface";
 
 export interface ICreateAuction {
   cardId: string;
@@ -11,7 +11,7 @@ export interface ICreateAuction {
   endTime: string;
 }
 
-export interface IUpdateAuction extends Omit<ICreateAuction, 'cardId'> {}
+export type IUpdateAuction = Omit<ICreateAuction, "cardId">;
 
 export interface IAuction {
   starting_bid: number;
@@ -49,15 +49,15 @@ export interface IGetAuctionsResponse {
 }
 
 export enum AuctionSortByEnum {
-  CREATION_DATE = 'creationDate',
-  FINISH_DATE = 'finishDate',
-  HIGHEST_BID = 'highestBid',
+  CREATION_DATE = "creationDate",
+  FINISH_DATE = "finishDate",
+  HIGHEST_BID = "highestBid",
 }
 
 export enum AuctionTypeEnum {
-  CREATED_BY_USER = 'createdByUser',
-  WON_BY_USER = 'wonByUser',
-  AVAILABLE = 'available',
+  CREATED_BY_USER = "createdByUser",
+  WON_BY_USER = "wonByUser",
+  AVAILABLE = "available",
 }
 
 export interface IGetAuctionsPayload {
@@ -67,7 +67,7 @@ export interface IGetAuctionsPayload {
   fromPrice?: number;
   toPrice?: number;
   isUserTakePart?: boolean;
-  type: AuctionTypeEnum;
+  type?: AuctionTypeEnum;
   isUserLeader?: boolean;
   sortOrder?: SortOrderEnum;
   sortBy?: AuctionSortByEnum;

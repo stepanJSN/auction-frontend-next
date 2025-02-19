@@ -16,7 +16,7 @@ type AutocompleteProps<T> = {
   startFromLetter?: number;
   searchFunc: (
     searchValue: string,
-  ) => Promise<{ data: Array<T>; info: IPagination }>;
+  ) => Promise<{ data?: { data: Array<T>; info: IPagination } }>;
   getLabel: (item: T | null) => string;
   onChange: (item: T | null) => void;
   isError?: boolean;
@@ -73,7 +73,7 @@ export default function Autocomplete<T>({
   return (
     <MuiAutocomplete
       disablePortal
-      options={data ? data.data : []}
+      options={data?.data ? data.data.data : []}
       size="small"
       getOptionLabel={getLabel}
       value={value}

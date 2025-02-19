@@ -1,5 +1,5 @@
-"use client"
-import { useMemo, useCallback } from 'react';
+"use client";
+import { useMemo, useCallback } from "react";
 import {
   Control,
   Controller,
@@ -7,9 +7,9 @@ import {
   ControllerRenderProps,
   FieldValues,
   Path,
-} from 'react-hook-form';
-import Autocomplete from './Autocomplete';
-import { IPagination } from '../interfaces/pagination.interface';
+} from "react-hook-form";
+import Autocomplete from "./Autocomplete";
+import { IPagination } from "../interfaces/pagination.interface";
 
 export type FormAutocompleteProps<T extends FieldValues, R> = {
   name: Path<T>;
@@ -18,7 +18,7 @@ export type FormAutocompleteProps<T extends FieldValues, R> = {
   startFromLetter?: number;
   searchFunc: (
     searchValue: string,
-  ) => Promise<{ data: Array<R>; info: IPagination }>;
+  ) => Promise<{ data?: { data: Array<R>; info: IPagination } }>;
   getLabel: (item: R | null) => string;
   errorText: string;
   noOptionsText?: string;
