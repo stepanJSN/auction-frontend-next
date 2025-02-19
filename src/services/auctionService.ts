@@ -11,6 +11,7 @@ import {
 } from "../interfaces/auctions.interfaces";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { AxiosError } from "axios";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 
 export const auctionService = {
   create: async (data: ICreateAuction) => {
@@ -18,7 +19,6 @@ export const auctionService = {
       const createdAuction = await apiWithAuth.post("/auctions", data);
       return { data: createdAuction.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
-      console.log(error.response);
       return {
         errorCode: (error as AxiosError).status,
         status: MutationStatusEnum.ERROR,
@@ -63,15 +63,32 @@ export const auctionService = {
   }),
 
   findOne: cache(async (id: string) => {
-    const auction = await apiWithAuth.get<IAuction>(`/auctions/${id}`);
-    return auction.data;
+    try {
+      const auction = await apiWithAuth.get<IAuction>(`/auctions/${id}`);
+      return { data: auction.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   update: async (id: string, data: IUpdateAuction) => {
-    await apiWithAuth.patch(`/auctions/${id}`, data);
+    try {
+      const updatedAuction = await apiWithAuth.patch(`/auctions/${id}`, data);
+      return { data: updatedAuction, status: MutationStatusEnum.SUCCESS };
+    } catch (error) {
+      return {
+        errorCode: (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
+    }
   },
 
   delete: async (id: string) => {
-    await apiWithAuth.delete(`/auctions/${id}`);
+    try {
+      await apiWithAuth.delete(`/auctions/${id}`);
+      return { status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 };

@@ -10,6 +10,7 @@ import {
 import { auctionService } from "@/services/auctionService";
 import { locationsService } from "@/services/locationsService";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function getPriceRangeAction() {
   try {
@@ -38,4 +39,21 @@ export async function createAuctionAction(data: ICreateAuction) {
     revalidatePath(ROUTES.AUCTIONS);
   }
   return createdAuction;
+}
+
+export async function updateAuctionAction(id: string, data: ICreateAuction) {
+  const updatedAuction = await auctionService.update(id, data);
+  if (updatedAuction.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.AUCTIONS);
+  }
+  return updatedAuction;
+}
+
+export async function deleteAuctionAction(id: string) {
+  const deletedAuction = await auctionService.delete(id);
+  if (deletedAuction.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.AUCTIONS);
+    redirect(ROUTES.AUCTIONS);
+  }
+  return deletedAuction;
 }
