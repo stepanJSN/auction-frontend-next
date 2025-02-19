@@ -9,10 +9,21 @@ import {
   IPriceRange,
   IUpdateAuction,
 } from "../interfaces/auctions.interfaces";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
+import { AxiosError } from "axios";
 
 export const auctionService = {
   create: async (data: ICreateAuction) => {
-    await apiWithAuth.post("/auctions", data);
+    try {
+      const createdAuction = await apiWithAuth.post("/auctions", data);
+      return { data: createdAuction.data, status: MutationStatusEnum.SUCCESS };
+    } catch (error) {
+      console.log(error.response);
+      return {
+        errorCode: (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
+    }
   },
 
   findAll: cache(async (payload: IGetAuctionsPayload) => {

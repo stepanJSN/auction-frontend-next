@@ -28,10 +28,20 @@ export default function CardData({ data }: CardDataProps) {
         <Typography variant="h4" gutterBottom>
           {data.name}
         </Typography>
-        <Typography variant="h6">Gender: {data.gender}</Typography>
-        {data.type && <Typography variant="h6">Type: {data.type}</Typography>}
-        <Typography variant="h6">Location: {data.location.name}</Typography>
-        <Typography variant="h6">Episodes with this card:</Typography>
+        <Typography variant="h6" fontWeight={400}>
+          Gender: {data.gender}
+        </Typography>
+        {data.type && (
+          <Typography variant="h6" fontWeight={400}>
+            Type: {data.type}
+          </Typography>
+        )}
+        <Typography variant="h6" fontWeight={400}>
+          Location: {data.location.name}
+        </Typography>
+        <Typography variant="h6" fontWeight={400}>
+          Episodes with this card:
+        </Typography>
         <List disablePadding sx={episodesListStyles}>
           {data.episodes.map((episode) => (
             <EpisodesList key={episode.id} name={episode.name} />
