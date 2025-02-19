@@ -59,9 +59,8 @@ export const userSlice = createSlice({
       state.hasStripeAccount = action.payload.has_stripe_account;
       state.created_at = action.payload.created_at;
     },
-    getUserError: (state, action: PayloadAction<number>) => {
+    getUserError: (state) => {
       state.status = QueryStatusEnum.ERROR;
-      state.errorCode = action.payload;
     },
 
     updateUser: (
