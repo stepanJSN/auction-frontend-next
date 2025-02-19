@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { createBidAction } from "../../auctions.actions";
 import { useSnackbar } from "notistack";
 import useErrorMessage from "@/hooks/useErrorMessage";
-import { createBidErrorMessages } from "./createBidErrorMessages";
+import { createBidErrorMessages } from "../createBidErrorMessages";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 const buttonStyles: SxProps = {
@@ -21,11 +21,13 @@ type NewBidFormProps = {
   isFormInactive: boolean;
   min: number;
   max?: number;
+  updateHighestBid: (bidAmount: number, isThisUserBid: boolean) => void;
 };
 
 export default function NewBidForm({
   auctionId,
   isFormInactive,
+  updateHighestBid,
   min,
   max,
 }: NewBidFormProps) {
@@ -61,9 +63,10 @@ export default function NewBidForm({
         enqueueSnackbar("Bid was created successfully", {
           variant: "success",
         });
+        updateHighestBid(+data.bid, true);
       }
     },
-    [auctionId, enqueueSnackbar, getErrorMessage],
+    [auctionId, enqueueSnackbar, getErrorMessage, updateHighestBid],
   );
 
   return (

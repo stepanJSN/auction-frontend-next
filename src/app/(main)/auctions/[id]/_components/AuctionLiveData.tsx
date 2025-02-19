@@ -3,7 +3,8 @@ import { IAuction } from "@/interfaces/auctions.interfaces";
 import { Chip, Divider, SxProps } from "@mui/material";
 import NewBidForm from "./NewBidForm";
 import AuctionData from "./AuctionData";
-import { useEffect, useState } from "react";
+import useAuction from "../useAuction";
+import useAuctionUpdateListener from "../useAuctionListener";
 
 type AuctionLiveDataProps = {
   auctionId: string;
@@ -18,11 +19,14 @@ export default function AuctionLiveData({
   auctionId,
   initialAuctionData,
 }: AuctionLiveDataProps) {
-  const [auction, setAuction] = useState(initialAuctionData);
-
-  useEffect(() => {
-    setAuction(initialAuctionData);
-  }, [initialAuctionData]);
+  const { auction, updateHighestBid, updateAuction, finishAuction } =
+    useAuction(initialAuctionData);
+  useAuctionUpdateListener({
+    auctionId,
+    updateAuction,
+    updateHighestBid,
+    finishAuction,
+  });
 
   const isFormInactive =
     auction?.is_completed ||
@@ -46,6 +50,7 @@ export default function AuctionLiveData({
             : auction.starting_bid
         }
         max={auction.max_bid ?? undefined}
+        updateHighestBid={updateHighestBid}
       />
     </>
   );
