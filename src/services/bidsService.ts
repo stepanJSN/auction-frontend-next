@@ -10,7 +10,9 @@ export const bidsService = {
       return { data: bid.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
-        errorCode: (error as AxiosError).status,
+        errorCode: (error as AxiosError).response?.data?.code
+          ? (error as AxiosError)?.response?.data?.code
+          : (error as AxiosError).status,
         status: MutationStatusEnum.ERROR,
       };
     }

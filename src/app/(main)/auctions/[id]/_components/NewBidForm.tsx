@@ -13,14 +13,14 @@ const buttonStyles: SxProps = {
   height: "max-content",
 };
 const containerStyles: SxProps = {
-  maxWidth: "300px",
+  maxWidth: "350px",
 };
 
 type NewBidFormProps = {
   auctionId: string;
   isFormInactive: boolean;
   min: number;
-  max: number;
+  max?: number;
 };
 
 export default function NewBidForm({
