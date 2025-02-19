@@ -8,7 +8,9 @@ import {
   IGetAuctionsPayload,
   IUpdateAuction,
 } from "@/interfaces/auctions.interfaces";
+import { ICreateBid } from "@/interfaces/bids.interfaces";
 import { auctionService } from "@/services/auctionService";
+import { bidsService } from "@/services/bidsService";
 import { locationsService } from "@/services/locationsService";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -57,4 +59,8 @@ export async function deleteAuctionAction(id: string) {
     redirect(ROUTES.AUCTIONS);
   }
   return deletedAuction;
+}
+
+export async function createBidAction(data: ICreateBid) {
+  return bidsService.create(data);
 }
