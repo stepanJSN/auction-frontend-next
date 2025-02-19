@@ -32,8 +32,11 @@ export default function PriceSlider({
     const priceRange = await getPriceRangeAction();
     if (priceRange) {
       setPriceRange(priceRange);
+      if (!fromPrice && !toPrice) {
+        setSliderValue([priceRange.min, priceRange.max]);
+      }
     }
-  }, []);
+  }, [fromPrice, toPrice]);
 
   useEffect(() => {
     getPriceRange();
