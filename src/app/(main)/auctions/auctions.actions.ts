@@ -1,9 +1,15 @@
 "use server";
 
+import { ROUTES } from "@/config/routesConfig";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
-import { IGetAuctionsPayload } from "@/interfaces/auctions.interfaces";
+import {
+  ICreateAuction,
+  IGetAuctionsPayload,
+} from "@/interfaces/auctions.interfaces";
 import { auctionService } from "@/services/auctionService";
 import { locationsService } from "@/services/locationsService";
+import { revalidatePath } from "next/cache";
 
 export async function getPriceRangeAction() {
   try {
@@ -24,4 +30,12 @@ export async function getAuctionsAction(payload?: IGetAuctionsPayload) {
 
 export async function getLocationByIdAction(locationId: number) {
   return locationsService.getOne(locationId);
+}
+
+export async function createAuctionAction(data: ICreateAuction) {
+  const createdAuction = await auctionService.create(data);
+  if (createdAuction.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.AUCTIONS);
+  }
+  return createdAuction;
 }
