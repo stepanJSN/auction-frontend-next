@@ -74,7 +74,7 @@ export const auctionService = {
   update: async (id: string, data: IUpdateAuction) => {
     try {
       const updatedAuction = await apiWithAuth.patch(`/auctions/${id}`, data);
-      return { data: updatedAuction, status: MutationStatusEnum.SUCCESS };
+      return { data: updatedAuction.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,

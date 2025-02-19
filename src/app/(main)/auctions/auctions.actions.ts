@@ -6,6 +6,7 @@ import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import {
   ICreateAuction,
   IGetAuctionsPayload,
+  IUpdateAuction,
 } from "@/interfaces/auctions.interfaces";
 import { auctionService } from "@/services/auctionService";
 import { locationsService } from "@/services/locationsService";
@@ -41,7 +42,7 @@ export async function createAuctionAction(data: ICreateAuction) {
   return createdAuction;
 }
 
-export async function updateAuctionAction(id: string, data: ICreateAuction) {
+export async function updateAuctionAction(id: string, data: IUpdateAuction) {
   const updatedAuction = await auctionService.update(id, data);
   if (updatedAuction.status === MutationStatusEnum.SUCCESS) {
     revalidatePath(ROUTES.AUCTIONS);
