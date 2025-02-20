@@ -2,6 +2,7 @@ import { cache } from "react";
 import { apiWithAuth } from "../apiConfig";
 import { IBalance } from "../interfaces/user.interfaces";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
+import { AxiosError } from "axios";
 
 export const transactionsService = {
   topUp: async (amount: number) => {
@@ -23,8 +24,14 @@ export const transactionsService = {
         },
       );
       return { data: balance.data, status: MutationStatusEnum.SUCCESS };
-    } catch {
-      return { status: MutationStatusEnum.ERROR };
+    } catch (error) {
+      console.log((error as AxiosError).response?.data.code);
+      return {
+        errorCode:
+          (error as AxiosError).response?.data?.code ??
+          (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
     }
   },
   getFeeAmount: cache(async () => {

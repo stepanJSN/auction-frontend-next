@@ -1,7 +1,7 @@
 import { ROUTES } from "@/config/routesConfig";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useCallback, useState } from "react";
-export default function usePaymentIntent() {
+export default function usePayment() {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

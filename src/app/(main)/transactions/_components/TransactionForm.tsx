@@ -2,18 +2,12 @@
 import FormInput from "@/components/FormInput";
 import { numberFieldValidationRules } from "@/constants/textFieldValidationRules";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
-import { IBalance } from "@/interfaces/user.interfaces";
-import { updateUserBalance } from "@/lib/features/user/userSlice";
 import { Box, Typography, Button, SxProps } from "@mui/material";
-import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 
 type TransactionFormProps = {
-  onSubmit: (
-    amount: number,
-  ) => Promise<{ status: MutationStatusEnum; data?: IBalance }>;
+  onSubmit: (amount: number) => Promise<MutationStatusEnum | undefined>;
   title: string;
 };
 
@@ -40,25 +34,15 @@ export default function TransactionForm({
     reset,
     formState: { isSubmitting },
   } = useForm<{ amount: string }>();
-  const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useDispatch();
 
   const onFormSubmit = useCallback(
     async (data: { amount: string }) => {
-      const response = await onSubmit(+data.amount);
-      if (response.status === MutationStatusEnum.SUCCESS && response.data) {
-        enqueueSnackbar("Operation was successfully", {
-          variant: "success",
-        });
+      const status = await onSubmit(+data.amount);
+      if (status === MutationStatusEnum.SUCCESS) {
         reset();
-        dispatch(updateUserBalance(response.data));
-        return;
       }
-      enqueueSnackbar("Error. Operation was not successful", {
-        variant: "error",
-      });
     },
-    [dispatch, enqueueSnackbar, onSubmit, reset],
+    [onSubmit, reset],
   );
 
   return (
