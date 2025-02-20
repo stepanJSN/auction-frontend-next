@@ -1,7 +1,7 @@
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { Role } from "@/enums/role.enum";
-import { IUser, IUpdateUser } from "@/interfaces/user.interfaces";
+import { IUser, IUpdateUser, IBalance } from "@/interfaces/user.interfaces";
 import { RootState } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -104,12 +104,8 @@ export const userSlice = createSlice({
       state.errorCode = null;
     },
 
-    topUpBalance: (state, _action: PayloadAction<number>) => {
-      state.updateStatus = MutationStatusEnum.PENDING;
-    },
-
-    withdrawBalance: (state, _action: PayloadAction<number>) => {
-      state.updateStatus = MutationStatusEnum.PENDING;
+    updateUserBalance: (state, action: PayloadAction<IBalance>) => {
+      state.balance = action.payload;
     },
   },
 });
@@ -126,8 +122,7 @@ export const {
   deleteUserSuccess,
   deleteUserError,
   resetDeleteUserStatus,
-  topUpBalance,
-  withdrawBalance,
+  updateUserBalance,
 } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 
