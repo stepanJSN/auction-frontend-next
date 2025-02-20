@@ -1,6 +1,10 @@
-import { Typography } from "@mui/material";
+import { Box, SxProps, Typography } from "@mui/material";
 import { Suspense } from "react";
 import GeneralStatisticsSkeleton from "./GeneralStatisticsSkeleton";
+
+const generalWrapperStyles: SxProps = {
+  mb: 2,
+};
 
 export default function StatisticsLayout({
   children,
@@ -14,7 +18,9 @@ export default function StatisticsLayout({
       <Typography variant="h4" gutterBottom>
         Statistics
       </Typography>
-      <Suspense fallback={<GeneralStatisticsSkeleton />}>{general}</Suspense>
+      <Box sx={generalWrapperStyles}>
+        <Suspense fallback={<GeneralStatisticsSkeleton />}>{general}</Suspense>
+      </Box>
       {children}
     </>
   );
