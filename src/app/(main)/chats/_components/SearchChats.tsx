@@ -2,8 +2,7 @@
 import DebouncedInput from "@/components/DebouncedInput";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-
-const CHAT_NAME_PARAM = "name";
+import { CHAT_NAME_PARAM } from "../page";
 
 export default function SearchChats() {
   const pathname = usePathname();

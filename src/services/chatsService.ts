@@ -2,9 +2,9 @@ import { cache } from "react";
 import { apiWithAuth } from "../apiConfig";
 import {
   IChat,
-  IChatSummary,
   ICreateChat,
   ICreateChatResponse,
+  IGetChatsResponse,
   IUpdateChat,
 } from "../interfaces/chats.interfaces";
 import {
@@ -22,7 +22,7 @@ export const chatsService = {
       const params = new URLSearchParams();
       if (page) params.append("page", page.toString());
       if (name) params.append("name", name);
-      const chats = await apiWithAuth.get<IChatSummary[]>("/chats", {
+      const chats = await apiWithAuth.get<IGetChatsResponse>("/chats", {
         params,
       });
       return { data: chats.data, status: QueryStatusEnum.SUCCESS };

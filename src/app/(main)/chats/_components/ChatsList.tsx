@@ -1,3 +1,4 @@
+"use client";
 import useLoadMore from "@/hooks/useLoadMore";
 import { IChatSummary } from "@/interfaces/chats.interfaces";
 import { getMoreChats } from "../chats.actions";
@@ -10,7 +11,7 @@ import PageError from "@/components/PageError";
 
 type ChatsListProps = {
   initialChats: IChatSummary[];
-  searchChatName: string;
+  searchChatName?: string;
   hasMore: boolean;
 };
 
@@ -35,12 +36,10 @@ export default function ChatsList({
       {queryStatus === QueryStatusEnum.LOADING && <LinearProgress />}
       {queryStatus === QueryStatusEnum.SUCCESS && <LinearProgressPlaceholder />}
       {queryStatus === QueryStatusEnum.ERROR && <PageError />}
-      {queryStatus === QueryStatusEnum.SUCCESS && (
-        <ChatsTable chats={chats.data} />
-      )}
+      {chats.data && <ChatsTable chats={chats.data} />}
       <LoadMoreBtn
         isLoading={queryStatus === QueryStatusEnum.LOADING}
-        hasMore={hasMore}
+        hasMore={chats.hasMore}
         handleLoadMore={handleLoadMore}
       />
     </>
