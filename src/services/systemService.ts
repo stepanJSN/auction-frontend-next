@@ -14,10 +14,10 @@ export const systemService = {
       const response = await apiWithAuth.get<IExchangeRate>(
         "/system/exchange-rate",
       );
-      return { result: QueryStatusEnum.SUCCESS, data: response.data };
+      return { status: QueryStatusEnum.SUCCESS, data: response.data };
     } catch (error) {
       return {
-        result: QueryStatusEnum.ERROR,
+        status: QueryStatusEnum.ERROR,
         errorCode: (error as AxiosError).status,
       };
     }
@@ -30,12 +30,12 @@ export const systemService = {
         data,
       );
       return {
-        result: MutationStatusEnum.SUCCESS,
+        status: MutationStatusEnum.SUCCESS,
         data: response.data,
       };
     } catch (error) {
       return {
-        result: MutationStatusEnum.ERROR,
+        status: MutationStatusEnum.ERROR,
         errorCode: (error as AxiosError).status,
       };
     }

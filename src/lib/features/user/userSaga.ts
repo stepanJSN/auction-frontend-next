@@ -22,23 +22,31 @@ import {
   getOneUserAction,
   updateUserAction,
 } from "./user.actions";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 
 const NOTIFICATION_TIMEOUT = 3000;
 
 function* getUserSaga(action: PayloadAction<string | undefined>) {
-  try {
-    if (action.payload) {
-      const userData: IUser = yield call(getOneUserAction, action.payload);
-      yield put(getUserSuccess(userData));
-    } else {
-      const userData: IUser = yield call(getCurrentUserAction);
-      yield put(getUserSuccess(userData));
-    }
-  } catch (error) {
-    yield put(
-      getUserError((error as AxiosError).status || ErrorCodesEnum.ServerError),
+  if (action.payload) {
+    const userData: { data?: IUser; status: QueryStatusEnum } = yield call(
+      getOneUserAction,
+      action.payload,
     );
+
+    if (userData.data) {
+      yield put(getUserSuccess(userData.data));
+      return;
+    }
+    put(getUserError());
+    return;
   }
+  const userData: { data: IUser; status: QueryStatusEnum } =
+    yield call(getCurrentUserAction);
+  if (userData.data) {
+    yield put(getUserSuccess(userData.data));
+    return;
+  }
+  yield put(getUserError());
 }
 
 function* updateUserSaga(

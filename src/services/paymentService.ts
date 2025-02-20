@@ -1,16 +1,25 @@
-import { apiWithAuth } from '../apiConfig';
+import { MutationStatusEnum } from "@/enums/mutationStatus";
+import { apiWithAuth } from "../apiConfig";
 
 export const paymentService = {
   createPaymentIntent: async (data: { amount: number }) => {
-    const response = await apiWithAuth.post<{ clientSecret: string }>(
-      '/stripe/create-payment-intent',
-      data,
-    );
-    return response.data;
+    try {
+      const response = await apiWithAuth.post<{ clientSecret: string }>(
+        "/stripe/create-payment-intent",
+        data,
+      );
+      return { data: response.data, status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 
   createAccount: async () => {
-    const response = await apiWithAuth.post<string>('/stripe/create-account');
-    return response.data;
+    try {
+      const response = await apiWithAuth.post<string>("/stripe/create-account");
+      return { data: response.data, status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 };

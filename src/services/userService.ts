@@ -9,6 +9,7 @@ import {
   IUser,
 } from "../interfaces/user.interfaces";
 import { AxiosError } from "axios";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 
 export const userService = {
   create: async (data: ICreateUser) => {
@@ -29,13 +30,21 @@ export const userService = {
   },
 
   getOne: cache(async (id: string) => {
-    const userData = await apiWithAuth.get<IUser>(`/users/${id}`);
-    return userData.data;
+    try {
+      const userData = await apiWithAuth.get<IUser>(`/users/${id}`);
+      return { data: userData.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   getCurrent: cache(async () => {
-    const userData = await apiWithAuth.get<IUser>("/users/current");
-    return userData.data;
+    try {
+      const userData = await apiWithAuth.get<IUser>("/users/current");
+      return { data: userData.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   getAll: cache(async (payload: IGetUserPayload) => {
