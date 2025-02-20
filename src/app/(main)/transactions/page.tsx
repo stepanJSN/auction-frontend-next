@@ -1,18 +1,12 @@
 import PageError from "@/components/PageError";
 import { Role } from "@/enums/role.enum";
 import { userService } from "@/services/userService";
-import { Grid2, Skeleton, Typography } from "@mui/material";
-import { GridSize, SxProps } from "@mui/system";
+import { Skeleton, Typography } from "@mui/material";
+import { SxProps } from "@mui/system";
 import { Suspense } from "react";
 import SystemFee from "./_components/SystemFee";
 import ExchangeRate from "./_components/ExchangeRate";
-import TransactionForm from "./_components/TransactionForm";
-import { topUpAction, withdrawAction } from "./transactions.actions";
-
-const gridFormColumns: Record<string, GridSize> = {
-  xs: 12,
-  md: "grow",
-};
+import CreateStripeAccountButton from "./_components/CreateStripeAccountButton";
 
 const textPlaceholderSize: SxProps = {
   fontSize: "1rem",
@@ -43,14 +37,9 @@ export default async function Transactions() {
       <Suspense fallback={<Skeleton variant="text" sx={textPlaceholderSize} />}>
         <ExchangeRate />
       </Suspense>
-      <Grid2 container spacing={2}>
-        <Grid2 size="grow">
-          <TransactionForm title="Top Up" onSubmit={topUpAction} />
-        </Grid2>
-        <Grid2 size={gridFormColumns}>
-          <TransactionForm title="Withdraw" onSubmit={withdrawAction} />
-        </Grid2>
-      </Grid2>
+      {!user.has_stripe_account && user.role === Role.USER && (
+        <CreateStripeAccountButton />
+      )}
     </>
   );
 }
