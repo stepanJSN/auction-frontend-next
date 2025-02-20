@@ -1,72 +1,110 @@
-import { cache } from 'react';
-import { apiWithAuth } from '../apiConfig';
+import { cache } from "react";
+import { apiWithAuth } from "../apiConfig";
 import {
   IChat,
   IChatSummary,
   ICreateChat,
   ICreateChatResponse,
   IUpdateChat,
-} from '../interfaces/chats.interfaces';
+} from "../interfaces/chats.interfaces";
 import {
   ICreateMessage,
   IDeleteMessage,
   IGetMessagesResponse,
   IMessage,
-} from '../interfaces/message.interfaces';
+} from "../interfaces/message.interfaces";
+import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 export const chatsService = {
   findAll: cache(async ({ page, name }: { page?: number; name?: string }) => {
-    const params = new URLSearchParams();
-    if (page) params.append('page', page.toString());
-    if (name) params.append('name', name);
-    const chats = await apiWithAuth.get<IChatSummary[]>('/chats', {
-      params,
-    });
-    return chats.data;
+    try {
+      const params = new URLSearchParams();
+      if (page) params.append("page", page.toString());
+      if (name) params.append("name", name);
+      const chats = await apiWithAuth.get<IChatSummary[]>("/chats", {
+        params,
+      });
+      return { data: chats.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
   findOne: cache(async (id: string) => {
-    const chat = await apiWithAuth.get<IChat>(`/chats/${id}`);
-    return chat.data;
+    try {
+      const chat = await apiWithAuth.get<IChat>(`/chats/${id}`);
+      return { data: chat.data, status: QueryStatusEnum.SUCCESS };
+    } catch {
+      return { status: QueryStatusEnum.ERROR };
+    }
   }),
 
-  findAllMessages: cache(async ({ id, cursor }: { cursor?: string; id: string }) => {
-    const params = new URLSearchParams();
-    if (cursor) params.append('cursor', cursor);
-    const chat = await apiWithAuth.get<IGetMessagesResponse>(
-      `/chats/${id}/messages`,
-      {
-        params,
-      },
-    );
-    return chat.data;
-  }),
+  findAllMessages: cache(
+    async ({ id, cursor }: { cursor?: string; id: string }) => {
+      try {
+        const params = new URLSearchParams();
+        if (cursor) params.append("cursor", cursor);
+        const chat = await apiWithAuth.get<IGetMessagesResponse>(
+          `/chats/${id}/messages`,
+          {
+            params,
+          },
+        );
+        return { data: chat.data, status: QueryStatusEnum.SUCCESS };
+      } catch {
+        return { status: QueryStatusEnum.ERROR };
+      }
+    },
+  ),
 
   create: async (data: ICreateChat) => {
-    const chat = await apiWithAuth.post<ICreateChatResponse>('/chats', data);
-    return chat.data;
+    try {
+      const chat = await apiWithAuth.post<ICreateChatResponse>("/chats", data);
+      return { data: chat.data, status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 
   update: async (id: string, data: IUpdateChat) => {
-    const chat = await apiWithAuth.patch<IChat>(`/chats/${id}`, data);
-    return chat.data;
+    try {
+      const chat = await apiWithAuth.patch<IChat>(`/chats/${id}`, data);
+      return { data: chat.data, status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 
   delete: async (id: string) => {
-    await apiWithAuth.delete(`/chats/${id}`);
+    try {
+      await apiWithAuth.delete(`/chats/${id}`);
+      return { status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 
   createMessage: async (data: ICreateMessage) => {
-    const response = await apiWithAuth.post<IMessage>(
-      `/chats/${data.chatId}/messages`,
-      {
-        message: data.message,
-      },
-    );
-    return response.data;
+    try {
+      const response = await apiWithAuth.post<IMessage>(
+        `/chats/${data.chatId}/messages`,
+        {
+          message: data.message,
+        },
+      );
+      return { data: response.data, status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 
   deleteMessage: async ({ chatId, messageId }: IDeleteMessage) => {
-    await apiWithAuth.delete(`/chats/${chatId}/messages/${messageId}`);
+    try {
+      await apiWithAuth.delete(`/chats/${chatId}/messages/${messageId}`);
+      return { status: MutationStatusEnum.SUCCESS };
+    } catch {
+      return { status: MutationStatusEnum.ERROR };
+    }
   },
 };
