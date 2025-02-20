@@ -16,7 +16,6 @@ type WithdrawErrorProps = {
 };
 
 export default function WithdrawError({ errorCode }: WithdrawErrorProps) {
-  console.log(errorCode);
   const getErrorMessage = useErrorMessage(transactionErrorMessages);
   return (
     <Alert severity="error" sx={alertStyles}>

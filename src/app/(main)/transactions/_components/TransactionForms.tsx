@@ -17,18 +17,22 @@ const gridFormColumns: Record<string, GridSize> = {
 };
 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
-console.log(STRIPE_PUBLISHABLE_KEY);
 
 type TransactionFormsProps = {
   role: Role;
   exchangeRate: number;
+  isTopUpSuccessful?: boolean;
 };
 
 export default function TransactionForms({
   role,
   exchangeRate,
+  isTopUpSuccessful,
 }: TransactionFormsProps) {
-  const { onTopUpSubmit, paymentData, resetPaymentData } = useTopUp(role);
+  const { onTopUpSubmit, paymentData, resetPaymentData } = useTopUp(
+    role,
+    isTopUpSuccessful,
+  );
   const { onWithdrawSubmit, withdrawError } = useWithdraw();
 
   const stripeOptions = useMemo(

@@ -1,5 +1,5 @@
 import useMutation from "@/hooks/useMutation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPaymentIntentAction, topUpAction } from "./transactions.actions";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ import { Role } from "@/enums/role.enum";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { updateUserBalance } from "@/lib/features/user/userSlice";
 
-export default function useTopUp(role: Role) {
+export default function useTopUp(role: Role, isTopUpSuccessful?: boolean) {
   const [paymentData, setPaymentData] = useState<{
     clientSecret: string;
     numberOfPoints: number;
@@ -52,6 +52,14 @@ export default function useTopUp(role: Role) {
   const resetPaymentData = useCallback(() => {
     setPaymentData(null);
   }, []);
+
+  useEffect(() => {
+    if (isTopUpSuccessful) {
+      enqueueSnackbar("Operation was successfully", {
+        variant: "success",
+      });
+    }
+  }, [enqueueSnackbar, isTopUpSuccessful]);
 
   return { onTopUpSubmit, isPending, paymentData, resetPaymentData };
 }

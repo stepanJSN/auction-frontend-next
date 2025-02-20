@@ -16,7 +16,12 @@ const alertStyles = {
   my: 1,
 };
 
-export default async function Transactions() {
+export default async function Transactions(props: {
+  searchParams?: Promise<{
+    isTopUpSuccessful?: boolean;
+  }>;
+}) {
+  const isTopUpSuccessful = (await props.searchParams)?.isTopUpSuccessful;
   const [{ data: user }, { data: exchangeRate }] = await Promise.all([
     userService.getCurrent(),
     systemService.getExchangeRate(),
@@ -54,6 +59,7 @@ export default async function Transactions() {
       <TransactionForms
         role={user.role}
         exchangeRate={exchangeRate.exchange_rate}
+        isTopUpSuccessful={isTopUpSuccessful}
       />
     </>
   );

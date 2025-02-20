@@ -20,13 +20,15 @@ export default function usePayment() {
       const result = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: window.location.origin + ROUTES.TRANSACTIONS,
+          return_url:
+            window.location.origin +
+            ROUTES.TRANSACTIONS +
+            "?isTopUpSuccessful=true",
         },
       });
 
       if (result.error) {
         setErrorMessage(result.error.message ?? "Unknown error");
-        console.log(result.error.message);
       }
 
       setIsLoading(false);

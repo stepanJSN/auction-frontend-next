@@ -25,7 +25,6 @@ export const transactionsService = {
       );
       return { data: balance.data, status: MutationStatusEnum.SUCCESS };
     } catch (error) {
-      console.log((error as AxiosError).response?.data.code);
       return {
         errorCode:
           (error as AxiosError).response?.data?.code ??
