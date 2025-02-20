@@ -16,5 +16,5 @@ export const adminMenu = [
   { label: 'Chats', path: ROUTES.CHATS },
   { label: 'Locations', path: ROUTES.LOCATIONS },
   { label: 'Episodes', path: ROUTES.EPISODES },
-  { label: 'Statistics', path: ROUTES.STATISTICS },
+  { label: 'Statistics', path: ROUTES.CARDS_STATISTICS },
 ];
