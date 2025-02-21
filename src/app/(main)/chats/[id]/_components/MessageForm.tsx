@@ -9,14 +9,14 @@ const messageValidationRules = {
 };
 
 type MessageFormProps = {
-  onSubmit: (data: { message: string }) => void;
+  onSubmit: (message: string) => void;
 };
 
 export default function MessageForm({ onSubmit }: MessageFormProps) {
   const { control, handleSubmit, reset } = useForm<{ message: string }>();
 
   const onFormSubmit = (data: { message: string }) => {
-    onSubmit(data);
+    onSubmit(data.message);
     reset();
   };
 
