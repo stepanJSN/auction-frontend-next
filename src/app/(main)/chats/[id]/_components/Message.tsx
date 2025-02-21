@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import DeleteMessageButton from "./DeleteMessageButton";
 import { IMessageWithCreateStatus } from "../messageWithCreateStatus.interface";
+import ResendButton from "./ResendButton";
 
 const messageHeaderStyles: SxProps = {
   alignItems: "center",
@@ -13,11 +14,18 @@ const senderNameStyles: SxProps = {
 };
 
 type MessageProps = {
-  chatId: string;
   message: IMessageWithCreateStatus;
+  onDeleteMessage: (messageId: string) => Promise<{
+    status: MutationStatusEnum;
+  }>;
+  onResendMessage: (messageId: string) => void;
 };
 
-export default function Message({ message, chatId }: MessageProps) {
+export default function Message({
+  message,
+  onDeleteMessage,
+  onResendMessage,
+}: MessageProps) {
   const messageStyles: SxProps = useMemo(
     () => ({
       bgcolor: message.sender.is_this_user_message
@@ -59,7 +67,17 @@ export default function Message({ message, chatId }: MessageProps) {
           </Typography>
           {message.sender.is_this_user_message &&
             message.creationStatus === MutationStatusEnum.SUCCESS && (
-              <DeleteMessageButton chatId={chatId} messageId={message.id} />
+              <DeleteMessageButton
+                onDeleteMessage={onDeleteMessage}
+                messageId={message.id}
+              />
+            )}
+          {message.sender.is_this_user_message &&
+            message.creationStatus === MutationStatusEnum.ERROR && (
+              <ResendButton
+                messageId={message.id}
+                onResendMessage={onResendMessage}
+              />
             )}
         </Stack>
         {message.message}

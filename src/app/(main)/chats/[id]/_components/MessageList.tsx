@@ -3,11 +3,15 @@ import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 import { useIntersectionObserver } from "usehooks-ts";
 import { IMessageWithCreateStatus } from "../messageWithCreateStatus.interface";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 type MessageListProps = {
-  chatId: string;
   messages: IMessageWithCreateStatus[];
   isScrollToBottomActive: boolean;
+  onDeleteMessage: (messageId: string) => Promise<{
+    status: MutationStatusEnum;
+  }>;
+  onResendMessage: (messageId: string) => void;
   onLoadMoreMessages: () => void;
 };
 
@@ -21,7 +25,8 @@ const intersectionObserverOptions = {
 };
 
 export default function MessageList({
-  chatId,
+  onDeleteMessage,
+  onResendMessage,
   messages,
   onLoadMoreMessages,
   isScrollToBottomActive,
@@ -53,7 +58,12 @@ export default function MessageList({
         {messages.map((message, index) => (
           <React.Fragment key={message.id || index}>
             {index === 0 && <div key={index} ref={ref}></div>}
-            <Message key={message.id} message={message} chatId={chatId} />
+            <Message
+              key={message.id}
+              message={message}
+              onDeleteMessage={onDeleteMessage}
+              onResendMessage={onResendMessage}
+            />
           </React.Fragment>
         ))}
       </List>

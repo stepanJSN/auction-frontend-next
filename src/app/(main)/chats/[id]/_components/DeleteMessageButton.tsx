@@ -1,25 +1,24 @@
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useMutation from "@/hooks/useMutation";
-import { deleteMessageAction } from "../../chats.actions";
 import { useCallback } from "react";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 type DeleteMessageButtonProps = {
-  chatId: string;
   messageId: string;
+  onDeleteMessage: (messageId: string) => Promise<{
+    status: MutationStatusEnum;
+  }>;
 };
 
 export default function DeleteMessageButton({
-  chatId,
+  onDeleteMessage,
   messageId,
 }: DeleteMessageButtonProps) {
-  const { isPending, mutate: deleteMessage } = useMutation(deleteMessageAction);
+  const { isPending, mutate: deleteMessage } = useMutation(onDeleteMessage);
   const handleDelete = useCallback(() => {
-    deleteMessage({
-      chatId,
-      messageId,
-    });
-  }, [chatId, deleteMessage, messageId]);
+    deleteMessage(messageId);
+  }, [deleteMessage, messageId]);
 
   return (
     <IconButton
