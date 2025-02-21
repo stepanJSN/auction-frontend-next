@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { ListItem, Stack, SxProps, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { IMessage } from "@/interfaces/message.interfaces";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
 import DeleteMessageButton from "./DeleteMessageButton";
+import { IMessageWithCreateStatus } from "../messageWithCreateStatus.interface";
 
 const messageHeaderStyles: SxProps = {
   alignItems: "center",
@@ -14,7 +14,7 @@ const senderNameStyles: SxProps = {
 
 type MessageProps = {
   chatId: string;
-  message: IMessage & { creationStatus: MutationStatusEnum };
+  message: IMessageWithCreateStatus;
 };
 
 export default function Message({ message, chatId }: MessageProps) {
