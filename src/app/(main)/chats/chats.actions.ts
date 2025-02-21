@@ -24,3 +24,13 @@ export async function createChatAction(data: ICreateChat) {
 export async function updateChatAction(id: string, data: ICreateChat) {
   return chatsService.update(id, data);
 }
+
+export async function deleteMessageAction({
+  chatId,
+  messageId,
+}: {
+  chatId: string;
+  messageId: string;
+}) {
+  return chatsService.deleteMessage({ chatId, messageId });
+}
