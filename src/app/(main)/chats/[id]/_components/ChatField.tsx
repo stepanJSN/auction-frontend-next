@@ -57,6 +57,7 @@ export default function ChatField({
 
   const createMessage = useCallback(
     async (message: string) => {
+      setIsScrollToBottomActive(true);
       const tempId = new Date().getTime().toString();
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -100,6 +101,7 @@ export default function ChatField({
 
   const handleLoadMore = useCallback(async () => {
     if (!cursor) return;
+    setIsScrollToBottomActive(false);
     const response = await getMoreMessagesAction({
       id: chatId,
       cursor,
