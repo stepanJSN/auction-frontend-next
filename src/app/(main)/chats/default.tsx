@@ -1,8 +1,7 @@
 import ChatsPage from "./_components/ChatsPage";
+import { CHAT_NAME_PARAM } from "./page";
 
-export const CHAT_NAME_PARAM = "name";
-
-export default async function page(props: {
+export default async function Default(props: {
   searchParams?: Promise<{
     [CHAT_NAME_PARAM]?: string;
     page?: string;

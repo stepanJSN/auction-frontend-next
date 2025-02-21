@@ -15,6 +15,7 @@ import {
 } from "../interfaces/message.interfaces";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
+import { AxiosError } from "axios";
 
 export const chatsService = {
   findAll: cache(async ({ page, name }: { page?: number; name?: string }) => {
@@ -62,8 +63,11 @@ export const chatsService = {
     try {
       const chat = await apiWithAuth.post<ICreateChatResponse>("/chats", data);
       return { data: chat.data, status: MutationStatusEnum.SUCCESS };
-    } catch {
-      return { status: MutationStatusEnum.ERROR };
+    } catch (error) {
+      return {
+        errorCode: (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
     }
   },
 
@@ -71,8 +75,11 @@ export const chatsService = {
     try {
       const chat = await apiWithAuth.patch<IChat>(`/chats/${id}`, data);
       return { data: chat.data, status: MutationStatusEnum.SUCCESS };
-    } catch {
-      return { status: MutationStatusEnum.ERROR };
+    } catch (error) {
+      return {
+        errorCode: (error as AxiosError).status,
+        status: MutationStatusEnum.ERROR,
+      };
     }
   },
 
