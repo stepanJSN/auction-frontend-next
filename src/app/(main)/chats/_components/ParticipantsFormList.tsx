@@ -23,6 +23,7 @@ export default function ParticipantsFormList({
       () => ({
         control,
         name: "participants",
+        rules: { minLength: 1, required: true },
       }),
       [control],
     ),
