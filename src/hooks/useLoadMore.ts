@@ -56,5 +56,5 @@ export default function useLoadMore<T, R>({
     });
   }, [initialData, hasMore]);
 
-  return { queryStatus, handleLoadMore, data };
+  return { queryStatus, handleLoadMore, data, setData };
 }

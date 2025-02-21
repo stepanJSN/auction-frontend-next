@@ -1,5 +1,5 @@
-import { IMessage } from './message.interfaces';
-import { IPagination } from './pagination.interface';
+import { IMessage } from "./message.interfaces";
+import { IPagination } from "./pagination.interface";
 
 export interface IChatSummary {
   id: string;
@@ -27,7 +27,7 @@ export interface ICreateChat {
   participants: string[];
 }
 
-export interface IUpdateChat extends Partial<ICreateChat> {}
+export type IUpdateChat = Partial<ICreateChat>;
 
 export interface ICreateChatResponse {
   id: string;
