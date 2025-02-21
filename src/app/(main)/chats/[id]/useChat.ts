@@ -6,7 +6,16 @@ import {
   getMoreMessagesAction,
 } from "../chats.actions";
 import { IMessageWithCreateStatus } from "./messageWithCreateStatus.interface";
-import { IMessage } from "@/interfaces/message.interfaces";
+import {
+  IDeleteMessageEventPayload,
+  IMessage,
+  IMessageEventPayload,
+} from "@/interfaces/message.interfaces";
+import useDeleteChatListener from "../hooks/useDeleteChatListener";
+import useDeleteMessageListener from "../hooks/useDeleteMessageListener";
+import useNewMessageListener from "../hooks/useNewMessageListener";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/lib/features/user/userSlice";
 
 const addCreationStatusToMessage = (
   message: IMessage,
@@ -29,10 +38,12 @@ export default function useChat({
   initialMessages,
 }: useChatParamsType) {
   const [cursor, setCursor] = useState<null | string>(initialCursor);
+  const { id: userId } = useSelector(selectUser);
   const [messages, setMessages] = useState(
     initialMessages.map(addCreationStatusToMessage),
   );
   const [isScrollToBottomActive, setIsScrollToBottomActive] = useState(true);
+  const [isChatDeletedDialogOpen, setIsChatDeletedDialogOpen] = useState(false);
 
   const updateMessage = useCallback(
     (params: {
@@ -171,9 +182,45 @@ export default function useChat({
     }
   }, [chatId, cursor]);
 
+  const handleNewMessage = useCallback(
+    (message: IMessageEventPayload) => {
+      if (message.chat_id !== chatId || message.sender.id === userId) return;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          ...message,
+          sender: {
+            ...message.sender,
+            is_this_user_message: false,
+          },
+          creationStatus: MutationStatusEnum.SUCCESS,
+        },
+      ]);
+      setIsScrollToBottomActive(true);
+    },
+    [chatId, userId],
+  );
+  useNewMessageListener(handleNewMessage);
+
+  const handleDeleteMessageEvent = useCallback(
+    (data: IDeleteMessageEventPayload) => {
+      setMessages((prevMessage) =>
+        prevMessage.filter((message) => message.id !== data.id),
+      );
+    },
+    [],
+  );
+  useDeleteMessageListener(handleDeleteMessageEvent);
+
+  const handleDeleteChatEvent = useCallback((_id: string) => {
+    setIsChatDeletedDialogOpen(true);
+  }, []);
+  useDeleteChatListener(handleDeleteChatEvent);
+
   return {
     messages,
     isScrollToBottomActive,
+    isChatDeletedDialogOpen,
     createMessage,
     loadMore,
     deleteMessage,

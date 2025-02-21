@@ -3,6 +3,7 @@ import { IMessage } from "@/interfaces/message.interfaces";
 import MessageForm from "./MessageForm";
 import MessageList from "./MessageList";
 import useChat from "../useChat";
+import ChatDeletedDialog from "./ChatDeletedDialog";
 
 type ChatFieldProps = {
   initialMessages: IMessage[];
@@ -18,6 +19,7 @@ export default function ChatField({
   const {
     messages,
     isScrollToBottomActive,
+    isChatDeletedDialogOpen,
     createMessage,
     loadMore,
     deleteMessage,
@@ -38,6 +40,7 @@ export default function ChatField({
         onLoadMoreMessages={loadMore}
       />
       <MessageForm onSubmit={createMessage} />
+      <ChatDeletedDialog open={isChatDeletedDialogOpen} />
     </>
   );
 }
