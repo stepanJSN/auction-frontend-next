@@ -20,3 +20,7 @@ export async function createChatAction(data: ICreateChat) {
   }
   return response;
 }
+
+export async function updateChatAction(id: string, data: ICreateChat) {
+  return chatsService.update(id, data);
+}
