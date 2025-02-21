@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Alert, Button, Stack, SxProps } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { IChatForm } from "../../../chatForm.interface";
@@ -8,24 +8,36 @@ import { optionalTextFieldValidationRules } from "@/constants/textFieldValidatio
 import ParticipantsFormList from "../../../_components/ParticipantsFormList";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { chatErrorMessages } from "../../../chatErrorMessages";
-import { createChatAction } from "../../../chats.actions";
+import { updateChatAction } from "../../../chats.actions";
+import { IChat } from "@/interfaces/chats.interfaces";
+import { delay } from "@/helpers/delay";
 
 const alertStyles: SxProps = {
   mb: 1,
 };
 
-export default function CreateChatForm() {
+type EditChatFormProps = {
+  initialData: IChat;
+};
+
+export default function EditChatForm({ initialData }: EditChatFormProps) {
   const {
     control,
     handleSubmit,
+    reset,
     setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<IChatForm>();
+  } = useForm<IChatForm>({
+    defaultValues: {
+      name: initialData.name,
+      participants: initialData.users,
+    },
+  });
   const getErrorMessage = useErrorMessage(chatErrorMessages);
 
-  const createChat = useCallback(
+  const updateChat = useCallback(
     async (data: IChatForm) => {
-      const response = await createChatAction({
+      const response = await updateChatAction(initialData.id, {
         name: data.name,
         participants: data.participants.map((participant) => participant.id),
       });
@@ -33,8 +45,18 @@ export default function CreateChatForm() {
         setError("root.serverError", { type: response.errorCode.toString() });
       }
     },
-    [setError],
+    [initialData.id, setError],
   );
+
+  useEffect(() => {
+    async function resetForm() {
+      await delay(2000);
+      reset();
+    }
+    if (isSubmitSuccessful) {
+      resetForm();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <>
@@ -50,10 +72,10 @@ export default function CreateChatForm() {
       )}
       {isSubmitSuccessful && (
         <Alert severity="success" sx={alertStyles}>
-          Chat created successfully
+          Chat updated successfully
         </Alert>
       )}
-      <Stack spacing={1} component="form" onSubmit={handleSubmit(createChat)}>
+      <Stack spacing={1} component="form" onSubmit={handleSubmit(updateChat)}>
         <FormInput
           name="name"
           label="Name"
@@ -65,12 +87,8 @@ export default function CreateChatForm() {
           control={control}
           isError={!!errors.participants}
         />
-        <Button
-          disabled={isSubmitSuccessful || isSubmitting}
-          type="submit"
-          variant="contained"
-        >
-          {isSubmitting ? "Creating..." : "Create"}
+        <Button disabled={isSubmitting} type="submit" variant="contained">
+          {isSubmitting ? "Updating..." : "Update"}
         </Button>
       </Stack>
     </>
