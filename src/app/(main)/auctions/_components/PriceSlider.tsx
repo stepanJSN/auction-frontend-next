@@ -30,10 +30,10 @@ export default function PriceSlider({
 
   const getPriceRange = useCallback(async () => {
     const priceRange = await getPriceRangeAction();
-    if (priceRange) {
-      setPriceRange(priceRange);
+    if (priceRange.data) {
+      setPriceRange(priceRange.data);
       if (!fromPrice && !toPrice) {
-        setSliderValue([priceRange.min, priceRange.max]);
+        setSliderValue([priceRange.data.min, priceRange.data.max]);
       }
     }
   }, [fromPrice, toPrice]);
