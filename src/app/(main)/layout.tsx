@@ -1,8 +1,9 @@
-"use client";
 import { Container, Stack, SxProps } from "@mui/material";
-import useUserData from "./useUserData";
 import Header from "./(header)/Header";
 import Footer from "./Footer";
+import MainProviders from "./MainProviders";
+import { userService } from "@/services/userService";
+import PageError from "@/components/PageError";
 
 const globalWrapperStyles: SxProps = {
   minHeight: "100vh",
@@ -14,18 +15,24 @@ const containerStyles: SxProps = {
   py: 2,
 };
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useUserData();
+  const { data: userData } = await userService.getCurrent();
+
+  if (!userData) {
+    return <PageError />;
+  }
 
   return (
-    <Stack sx={globalWrapperStyles}>
-      <Header />
-      <Container sx={containerStyles}>{children}</Container>
-      <Footer />
-    </Stack>
+    <MainProviders userData={userData}>
+      <Stack sx={globalWrapperStyles}>
+        <Header />
+        <Container sx={containerStyles}>{children}</Container>
+        <Footer />
+      </Stack>
+    </MainProviders>
   );
 }
