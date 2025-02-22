@@ -21,6 +21,7 @@ export async function deleteUserAction(userId: string) {
   if (response.status === MutationStatusEnum.SUCCESS) {
     revalidatePath(ROUTES.USERS);
   }
+  return response;
 }
 
 export async function updateUserRoleAction(userId: string, role: Role) {
@@ -28,4 +29,5 @@ export async function updateUserRoleAction(userId: string, role: Role) {
   if (response.status === MutationStatusEnum.SUCCESS) {
     revalidatePath(ROUTES.USERS);
   }
+  return response;
 }

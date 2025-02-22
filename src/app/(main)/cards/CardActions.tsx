@@ -10,10 +10,10 @@ interface CardActionsProps {
 }
 
 export default async function CardActions({ card }: CardActionsProps) {
-  const { role } = await userService.getCurrent();
+  const { data: userData } = await userService.getCurrent();
 
   return (
-    role === Role.ADMIN && (
+    userData?.role === Role.ADMIN && (
       <>
         <Button
           size="small"

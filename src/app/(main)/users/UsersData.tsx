@@ -8,8 +8,6 @@ import LoadMoreBtn from "@/components/LoadMoreBtn";
 import { LinearProgress } from "@mui/material";
 import { LinearProgressPlaceholder } from "@/components/LinearProgressPlaceholder";
 import UsersTable from "./UsersTable";
-import useClient from "@/hooks/useClient";
-import PageLoader from "@/components/PageLoader";
 
 type UsersDataProps = {
   initialUsers: IUserSummary[];
@@ -32,11 +30,6 @@ export default function UsersData({
     hasMore: hasMore,
     getMore: getUsersActions,
   });
-  const isClient = useClient();
-
-  if (!isClient) {
-    return <PageLoader />;
-  }
 
   return (
     <>
