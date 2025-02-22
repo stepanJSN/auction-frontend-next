@@ -1,53 +1,31 @@
 "use server";
 import { ROUTES } from "@/config/routesConfig";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
-import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import { Role } from "@/enums/role.enum";
 import { IGetUserPayload } from "@/interfaces/user.interfaces";
 import { userService } from "@/services/userService";
-import { AxiosError } from "axios";
 import { revalidatePath } from "next/cache";
 
 export async function getUsersActions(
   currentPage: number,
   filters: Omit<IGetUserPayload, "page">,
 ) {
-  try {
-    const users = await userService.getAll({
-      page: currentPage,
-      ...filters,
-    });
-    return { data: users, status: QueryStatusEnum.SUCCESS };
-  } catch (error) {
-    return {
-      errorCode: (error as AxiosError).status,
-      status: QueryStatusEnum.ERROR,
-    };
-  }
+  return userService.getAll({
+    page: currentPage,
+    ...filters,
+  });
 }
 
 export async function deleteUserAction(userId: string) {
-  try {
-    await userService.delete(userId);
+  const response = await userService.delete(userId);
+  if (response.status === MutationStatusEnum.SUCCESS) {
     revalidatePath(ROUTES.USERS);
-    return { status: MutationStatusEnum.SUCCESS };
-  } catch (error) {
-    return {
-      errorCode: (error as AxiosError).status,
-      status: MutationStatusEnum.ERROR,
-    };
   }
 }
 
 export async function updateUserRoleAction(userId: string, role: Role) {
-  try {
-    await userService.changeRole(userId, role);
+  const response = await userService.changeRole(userId, role);
+  if (response.status === MutationStatusEnum.SUCCESS) {
     revalidatePath(ROUTES.USERS);
-    return { status: MutationStatusEnum.SUCCESS };
-  } catch (error) {
-    return {
-      errorCode: (error as AxiosError).status,
-      status: MutationStatusEnum.ERROR,
-    };
   }
 }

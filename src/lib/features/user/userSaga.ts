@@ -13,7 +13,6 @@ import {
   resetDeleteUserStatus,
   updateUser,
 } from "./userSlice";
-import { AxiosError } from "axios";
 import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
 import { IUser, IUpdateUser } from "@/interfaces/user.interfaces";
 import {
@@ -23,6 +22,7 @@ import {
   updateUserAction,
 } from "./user.actions";
 import { QueryStatusEnum } from "@/enums/queryStatus.enum";
+import { MutationStatusEnum } from "@/enums/mutationStatus";
 
 const NOTIFICATION_TIMEOUT = 3000;
 
@@ -52,39 +52,34 @@ function* getUserSaga(action: PayloadAction<string | undefined>) {
 function* updateUserSaga(
   action: PayloadAction<{ id: string; data: IUpdateUser }>,
 ) {
-  try {
-    const userData: IUser = yield call(
-      updateUserAction,
-      action.payload.id,
-      action.payload.data,
-    );
-    yield put(updateUserSuccess(userData));
-  } catch (error) {
+  const userData: {
+    data?: IUser;
+    status: MutationStatusEnum;
+    errorCode?: number;
+  } = yield call(updateUserAction, action.payload.id, action.payload.data);
+  if (userData.data && !userData.errorCode) {
+    yield put(updateUserSuccess(userData.data));
+  } else {
     yield put(
-      updateUserError(
-        (error as AxiosError).status || ErrorCodesEnum.ServerError,
-      ),
+      updateUserError(userData.errorCode || ErrorCodesEnum.ServerError),
     );
-  } finally {
-    yield delay(NOTIFICATION_TIMEOUT);
-    yield put(resetUpdateUserStatus());
   }
+  yield delay(NOTIFICATION_TIMEOUT);
+  yield put(resetUpdateUserStatus());
 }
 
 function* deleteUserSaga(action: PayloadAction<string>) {
-  try {
+  const response: { errorCode?: number; status: MutationStatusEnum } =
     yield call(deleteUserAction, action.payload);
+  if (response.status === MutationStatusEnum.SUCCESS) {
     yield put(deleteUserSuccess());
-  } catch (error) {
+  } else {
     yield put(
-      deleteUserError(
-        (error as AxiosError).status || ErrorCodesEnum.ServerError,
-      ),
+      deleteUserError(response.errorCode || ErrorCodesEnum.ServerError),
     );
-  } finally {
-    yield delay(NOTIFICATION_TIMEOUT);
-    yield put(resetDeleteUserStatus());
   }
+  yield delay(NOTIFICATION_TIMEOUT);
+  yield put(resetDeleteUserStatus());
 }
 
 export function* watchUserSaga() {
