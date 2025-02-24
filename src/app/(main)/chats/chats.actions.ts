@@ -5,6 +5,7 @@ import { MutationStatusEnum } from "@/enums/mutationStatus";
 import { ICreateChat } from "@/interfaces/chats.interfaces";
 import { ICreateMessage } from "@/interfaces/message.interfaces";
 import { chatsService } from "@/services/chatsService";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getMoreChats(page: number, chatName?: string) {
@@ -45,4 +46,13 @@ export async function getMoreMessagesAction(payload: {
   id: string;
 }) {
   return chatsService.findAllMessages(payload);
+}
+
+export async function deleteChatAction(chatId: string) {
+  const response = await chatsService.delete(chatId);
+  if (response.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.CHATS);
+    redirect(ROUTES.CHATS);
+  }
+  return response;
 }
