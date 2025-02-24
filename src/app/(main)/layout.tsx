@@ -1,10 +1,10 @@
 import { Stack, SxProps } from "@mui/material";
-import Header from "./(header)/Header";
-import Footer from "./Footer";
+import Header from "./_components/(header)/Header";
+import Footer from "./_components/Footer";
 import MainProviders from "./MainProviders";
 import { userService } from "@/services/userService";
 import PageError from "@/components/PageError";
-import MainContainer from "./MainContainer";
+import MainContainer from "./_components/MainContainer";
 
 const globalWrapperStyles: SxProps = {
   minHeight: "100vh",

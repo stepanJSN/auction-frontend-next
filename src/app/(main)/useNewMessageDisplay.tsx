@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { IMessageEventPayload } from "@/interfaces/message.interfaces";
-import NewMessageLink from "./NewMessageLink";
+import NewMessageLink from "./_components/NewMessageLink";
 
 export default function useNewMessageDisplay() {
   const { id } = useSelector(selectUser);

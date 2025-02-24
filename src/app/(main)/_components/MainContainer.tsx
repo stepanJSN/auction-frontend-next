@@ -1,6 +1,6 @@
 "use client";
 import { Container, SxProps } from "@mui/material";
-import useNewMessageDisplay from "./useNewMessageDisplay";
+import useNewMessageDisplay from "../useNewMessageDisplay";
 
 const containerStyles: SxProps = {
   flex: "auto",
