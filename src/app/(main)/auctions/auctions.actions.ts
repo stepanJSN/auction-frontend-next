@@ -2,7 +2,6 @@
 
 import { ROUTES } from "@/config/routesConfig";
 import { MutationStatusEnum } from "@/enums/mutationStatus";
-import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 import {
   ICreateAuction,
   IGetAuctionsPayload,
@@ -16,20 +15,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getPriceRangeAction() {
-  try {
-    return await auctionService.findPriceRange();
-  } catch (error) {
-    console.log(error);
-  }
+  return auctionService.findPriceRange();
 }
 
 export async function getAuctionsAction(payload?: IGetAuctionsPayload) {
-  try {
-    const auctions = await auctionService.findAll(payload || {});
-    return { data: auctions, status: QueryStatusEnum.SUCCESS };
-  } catch {
-    return { status: QueryStatusEnum.ERROR };
-  }
+  return auctionService.findAll(payload || {});
 }
 
 export async function getLocationByIdAction(locationId: number) {

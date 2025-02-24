@@ -14,21 +14,29 @@ export async function getEpisodesByNameAction(episodeName: string) {
 
 export async function createCardAction(data: ICardFrom) {
   if (!data.image?.image) return;
-  return cardsService.create({
+  const response = await cardsService.create({
     ...data,
     image: data.image?.image,
     locationId: data.location.id,
     episodesId: data.episodes.map((episode) => episode.id),
   });
+  if (response.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.CARDS);
+  }
+  return response;
 }
 
 export async function editCardAction(id: string, data: ICardFrom) {
-  return cardsService.update(id, {
+  const response = await cardsService.update(id, {
     ...data,
     image: data.image?.image,
     locationId: data.location.id,
     episodesId: data.episodes.map((episode) => episode.id),
   });
+  if (response.status === MutationStatusEnum.SUCCESS) {
+    revalidatePath(ROUTES.CARDS);
+  }
+  return response;
 }
 
 export async function deleteCardAction(id: string) {
