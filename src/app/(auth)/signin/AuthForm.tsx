@@ -4,16 +4,23 @@ import { Alert, Box, Button, SxProps } from "@mui/material";
 import { ISingInRequest } from "@/interfaces/auth.interfaces";
 import FormInput from "@/components/FormInput";
 import {
-  emailValidationRules,
-  passwordValidationRules,
+  emailSchema,
+  passwordSchema,
 } from "@/constants/textFieldValidationRules";
 import { signinAction } from "./signin.action";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { signinErrorMessages } from "./signinErrorMessages";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const formButtonStyles: SxProps = {
   mt: 1,
 };
+
+const signinSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
 
 export default function AuthForm() {
   const {
@@ -21,7 +28,9 @@ export default function AuthForm() {
     handleSubmit,
     formState: { isSubmitting, errors },
     setError,
-  } = useForm<ISingInRequest>();
+  } = useForm<ISingInRequest>({
+    resolver: zodResolver(signinSchema),
+  });
   const getErrorMessage = useErrorMessage(signinErrorMessages);
 
   const signin = async (data: ISingInRequest) => {
@@ -43,14 +52,12 @@ export default function AuthForm() {
         label="Email"
         control={control}
         errorText="Incorrect email"
-        rules={emailValidationRules}
       />
       <FormInput
         name="password"
         label="Password"
         control={control}
         errorText="Incorrect password"
-        rules={passwordValidationRules}
         type="password"
       />
       <Button
