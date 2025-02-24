@@ -1,18 +1,13 @@
-import { Container, Stack, SxProps } from "@mui/material";
+import { Stack, SxProps } from "@mui/material";
 import Header from "./(header)/Header";
 import Footer from "./Footer";
 import MainProviders from "./MainProviders";
 import { userService } from "@/services/userService";
 import PageError from "@/components/PageError";
+import MainContainer from "./MainContainer";
 
 const globalWrapperStyles: SxProps = {
   minHeight: "100vh",
-};
-
-const containerStyles: SxProps = {
-  flex: "auto",
-  position: "relative",
-  py: 2,
 };
 
 export default async function MainLayout({
@@ -30,7 +25,7 @@ export default async function MainLayout({
     <MainProviders userData={userData}>
       <Stack sx={globalWrapperStyles}>
         <Header />
-        <Container sx={containerStyles}>{children}</Container>
+        <MainContainer>{children}</MainContainer>
         <Footer />
       </Stack>
     </MainProviders>

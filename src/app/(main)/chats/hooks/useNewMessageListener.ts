@@ -4,7 +4,7 @@ import { ChatsEventEnum } from "../chatsEventsEnum";
 import { IMessageEventPayload } from "@/interfaces/message.interfaces";
 
 export default function useNewMessageListener(
-  onNewMessage: (id: IMessageEventPayload) => void,
+  onNewMessage: (message: IMessageEventPayload) => void,
 ) {
   const socket = useSocket();
   useEffect(() => {
