@@ -1,9 +1,6 @@
 import PageError from "@/components/PageError";
 import { chatsService } from "@/services/chatsService";
-import { Grid2 } from "@mui/material";
-import React from "react";
-import ChatHeader from "./_components/ChatHeader";
-import ChatField from "./_components/ChatField";
+import ChatView from "./_components/ChatView";
 
 export default async function ChatPage({
   params,
@@ -22,21 +19,5 @@ export default async function ChatPage({
     return <PageError />;
   }
 
-  return (
-    <Grid2 container spacing={1}>
-      <Grid2 size="grow">
-        <>
-          <ChatHeader
-            name={chatData.name}
-            numberOfParticipants={chatData.users.length}
-          />
-          <ChatField
-            chatId={id}
-            initialCursor={messages.pagination.cursor}
-            initialMessages={messages.data}
-          />
-        </>
-      </Grid2>
-    </Grid2>
-  );
+  return <ChatView chatId={id} messages={messages} chatData={chatData} />;
 }
