@@ -9,6 +9,7 @@ export const ROUTES = {
   CHATS: "/chats",
   CHAT: (id: string) => `/chats/${id}`,
   CREATE_CHAT: "/chats/create",
+  EDIT_CHAT: (chatId: string) => `/chats/${chatId}/edit`,
   CARDS: "/cards",
   CARD_DETAILS: (cardId: string) => `/cards/${cardId}`,
   USER_CARDS: "/",

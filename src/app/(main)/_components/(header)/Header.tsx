@@ -13,7 +13,7 @@ import Menu from "./Menu";
 import ProfileMenu from "./ProfileMenu";
 import MenuIcon from "@mui/icons-material/Menu";
 import useMenu from "./useMenu";
-import MainContainer from "../MainContainer";
+import HeaderFooterContainer from "../HeaderFooterContainer";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/lib/features/user/userSlice";
@@ -58,7 +58,7 @@ export default function Header() {
   );
 
   return (
-    <MainContainer>
+    <HeaderFooterContainer>
       <HeaderStyled
         container
         component="header"
@@ -101,6 +101,6 @@ export default function Header() {
           isAdmin={role === Role.ADMIN}
         />
       </HeaderStyled>
-    </MainContainer>
+    </HeaderFooterContainer>
   );
 }

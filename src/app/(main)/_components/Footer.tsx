@@ -1,5 +1,5 @@
 import { SxProps, Typography } from "@mui/material";
-import MainContainer from "./MainContainer";
+import HeaderFooterContainer from "./HeaderFooterContainer";
 
 const typographyStyles: SxProps = {
   color: "common.white",
@@ -8,10 +8,10 @@ const typographyStyles: SxProps = {
 
 export default function Footer() {
   return (
-    <MainContainer>
+    <HeaderFooterContainer>
       <Typography textAlign="center" sx={typographyStyles}>
         Rick & Morty cards | 2025
       </Typography>
-    </MainContainer>
+    </HeaderFooterContainer>
   );
 }
