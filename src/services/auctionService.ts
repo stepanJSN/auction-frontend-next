@@ -16,9 +16,10 @@ import { QueryStatusEnum } from "@/enums/queryStatus.enum";
 export const auctionService = {
   create: async (data: ICreateAuction) => {
     try {
-      const createdAuction = await apiWithAuth.post("/auctions", data);
-      return { data: createdAuction.data, status: MutationStatusEnum.SUCCESS };
+      await apiWithAuth.post("/auctions", data);
+      return { status: MutationStatusEnum.SUCCESS };
     } catch (error) {
+      console.log(error);
       return {
         errorCode: (error as AxiosError).status,
         status: MutationStatusEnum.ERROR,
@@ -81,8 +82,8 @@ export const auctionService = {
 
   update: async (id: string, data: IUpdateAuction) => {
     try {
-      const updatedAuction = await apiWithAuth.patch(`/auctions/${id}`, data);
-      return { data: updatedAuction.data, status: MutationStatusEnum.SUCCESS };
+      await apiWithAuth.patch(`/auctions/${id}`, data);
+      return { status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
