@@ -11,6 +11,12 @@ const settingsGridBreakpoints = {
   xs: 0,
   md: 4,
 };
+const dividerStyles = {
+  display: {
+    xs: "none",
+    md: "block",
+  },
+};
 
 type ChatViewProps = {
   chatId: string;
@@ -40,7 +46,7 @@ export default function ChatView({
           initialMessages={messages.data}
         />
       </Grid2>
-      <Divider orientation="vertical" flexItem />
+      <Divider sx={dividerStyles} orientation="vertical" flexItem />
       <Grid2 size={settingsGridBreakpoints}>
         <ChatSettings
           isOpen={isSettingsOpen}
