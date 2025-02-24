@@ -36,16 +36,3 @@ export interface ICreateCard {
   episodesId: number[];
   image: Blob;
 }
-
-export interface ICardFrom {
-  name: string;
-  type?: string;
-  gender: Gender;
-  isActive: boolean;
-  location: ILocation;
-  episodes: IEpisode[];
-  image: {
-    url: string;
-    image?: Blob;
-  } | null;
-}

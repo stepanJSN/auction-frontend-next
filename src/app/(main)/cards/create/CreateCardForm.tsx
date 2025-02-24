@@ -7,7 +7,8 @@ import { createCardAction } from "../cards.actions";
 import { useEffect } from "react";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { createCardErrorMessages } from "./createCardErrorMessages";
-import { ICardFrom } from "@/interfaces/cards.interface";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cardFormSchema, ICardFrom } from "../cardFormSchema";
 
 const alertStyles: SxProps = {
   mb: 1,
@@ -30,7 +31,9 @@ export default function CardForm() {
     reset,
     setError,
     formState: { errors, isSubmitSuccessful, isSubmitting },
-  } = useForm<ICardFrom>();
+  } = useForm<ICardFrom>({
+    resolver: zodResolver(cardFormSchema),
+  });
   const getErrorMessage = useErrorMessage(createCardErrorMessages);
 
   const submitAction = async (data: ICardFrom) => {

@@ -1,7 +1,4 @@
 "use client";
-import { Gender } from "@/enums/gender.enum";
-import { IEpisode } from "@/interfaces/episodes.interfaces";
-import { ILocation } from "@/interfaces/locations.interfaces";
 import { Button, Grid2, GridSize, Stack, SxProps } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ImageUpload from "../../ImageUpload";
@@ -10,19 +7,8 @@ import { editCardAction } from "../../cards.actions";
 import Notification from "@/components/Notification";
 import { ICard } from "@/interfaces/cards.interface";
 import DeleteButton from "./DeleteButton";
-
-export interface ICardFrom {
-  name: string;
-  type?: string;
-  gender: Gender;
-  isActive: boolean;
-  location: ILocation;
-  episodes: IEpisode[];
-  image: {
-    url: string;
-    image?: Blob;
-  } | null;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cardFormSchema, ICardFrom } from "../../cardFormSchema";
 
 const imageContainerStyles: SxProps = {
   minWidth: "250px",
@@ -46,6 +32,7 @@ export default function CardForm({ data, cardId }: CardFormProps) {
     setError,
     formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm<ICardFrom>({
+    resolver: zodResolver(cardFormSchema),
     defaultValues: {
       name: data.name,
       type: data.type,
