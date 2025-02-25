@@ -3,8 +3,8 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type {Config} from 'jest';
-import nextJest from 'next/jest.js';
+import type { Config } from "jest";
+import nextJest from "next/jest.js";
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -79,15 +79,7 @@ const config: Config = {
   // ],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: [
-    "js",
-    "mjs",
-    "cjs",
-    "jsx",
-    "ts",
-    "tsx",
-    "json",
-  ],
+  moduleFileExtensions: ["js", "mjs", "cjs", "jsx", "ts", "tsx", "json"],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {
@@ -170,6 +162,10 @@ const config: Config = {
   // The regexp pattern or array of patterns that Jest uses to detect test files
   testRegex: ".*\\.spec\\.tsx?$",
 
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1",
+  },
+
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
 
@@ -199,7 +195,7 @@ const config: Config = {
 };
 
 const createJestConfig = nextJest({
-  dir: './',
+  dir: "./",
 });
 
 export default createJestConfig(config);
