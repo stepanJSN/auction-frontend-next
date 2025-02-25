@@ -16,6 +16,7 @@ export const userService = {
   create: async (data: ICreateUser) => {
     try {
       await api.post("/users", data);
+      return { status: MutationStatusEnum.SUCCESS };
     } catch (error) {
       return {
         errorCode: (error as AxiosError).status,
