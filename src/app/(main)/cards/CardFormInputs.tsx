@@ -2,17 +2,13 @@ import FormAutocomplete from "@/components/FormAutocomplete";
 import FormInput from "@/components/FormInput";
 import FormSelect from "@/components/FormSelect";
 import FormSwitch from "@/components/FormSwitch";
-import {
-  textFieldValidationRules,
-  optionalTextFieldValidationRules,
-} from "@/constants/textFieldValidationRules";
 import { Stack } from "@mui/material";
 import React, { useCallback } from "react";
 import EpisodesListForm from "./EpisodesListForm";
 import { Control, FieldErrors } from "react-hook-form";
 import { ILocation } from "@/interfaces/locations.interfaces";
-import { ICardFrom } from "@/interfaces/cards.interface";
 import { getLocationsByNameAction } from "@/actions";
+import { ICardFrom } from "./cardFormSchema";
 
 type CardFormInputsProps = {
   control: Control<ICardFrom>;
@@ -49,14 +45,12 @@ export default function CardFormInputs({
         label="Name"
         control={control}
         errorText="The name must be between 2 and 15 characters long"
-        rules={textFieldValidationRules}
       />
       <FormInput
         name="type"
         label="Type"
         control={control}
         errorText="The type must be between 2 and 15 characters long"
-        rules={optionalTextFieldValidationRules}
       />
       <FormSelect
         name="gender"

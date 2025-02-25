@@ -1,28 +1,28 @@
-"use client"
+"use client";
 import {
   Control,
   Controller,
   FieldValues,
   Path,
   RegisterOptions,
-} from 'react-hook-form';
-import TextField from '@mui/material/TextField';
-import { IconButton, InputAdornment } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+} from "react-hook-form";
+import TextField from "@mui/material/TextField";
+import { IconButton, InputAdornment } from "@mui/material";
+import { useCallback, useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export type FormInputProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   control: Control<T>;
-  type?: 'text' | 'password' | 'number';
-  margin?: 'dense' | 'normal' | 'none';
+  type?: "text" | "password" | "number";
+  margin?: "dense" | "normal" | "none";
   errorText?: string;
   placeholder?: string;
   disabled?: boolean;
   rules?: Omit<
     RegisterOptions<T>,
-    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
 };
 
@@ -33,7 +33,7 @@ export default function FormInput<T extends FieldValues>({
   errorText,
   rules,
   type,
-  margin = 'dense',
+  margin = "dense",
   placeholder,
   disabled,
 }: FormInputProps<T>) {
@@ -50,29 +50,30 @@ export default function FormInput<T extends FieldValues>({
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextField
-          helperText={error ? errorText : null}
+          helperText={error ? error.message || errorText : null}
           size="small"
           error={!!error}
           onChange={onChange}
-          value={value ?? ''}
+          value={value ?? ""}
           fullWidth
           label={label}
           placeholder={placeholder}
           disabled={disabled}
           margin={margin}
           variant="outlined"
-          type={type === 'password' && showPassword ? 'text' : type}
+          type={type === "password" && showPassword ? "text" : type}
           slotProps={{
             input: {
-              endAdornment: type === 'password' && (
+              endAdornment: type === "password" && (
                 <InputAdornment position="end">
                   <IconButton
                     aria-label={
                       showPassword
-                        ? 'hide the password'
-                        : 'display the password'
+                        ? "hide the password"
+                        : "display the password"
                     }
-                    onClick={handleClickShowPassword}>
+                    onClick={handleClickShowPassword}
+                  >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
