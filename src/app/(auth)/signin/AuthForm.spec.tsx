@@ -8,6 +8,8 @@ import {
 } from "@testing-library/react";
 import AuthForm from "./AuthForm";
 import { signinAction } from "./signin.action";
+import { ErrorCodesEnum } from "@/enums/errorCodes.enum";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("./signin.action", () => ({
   signinAction: jest.fn(),
@@ -37,15 +39,10 @@ describe("AuthForm", () => {
 
     render(<AuthForm />);
 
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: mockEmail },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: mockPassword },
-    });
-
     await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: "Sign In" }));
+      await userEvent.type(screen.getByLabelText("Email"), mockEmail);
+      await userEvent.type(screen.getByLabelText("Password"), mockPassword);
+      userEvent.click(screen.getByRole("button", { name: "Sign In" }));
     });
 
     await waitFor(() =>
@@ -57,19 +54,16 @@ describe("AuthForm", () => {
   });
 
   it("shows an error message when signinAction returns an error", async () => {
-    (signinAction as jest.Mock).mockResolvedValue({ errorCode: 401 });
+    (signinAction as jest.Mock).mockResolvedValue({
+      errorCode: ErrorCodesEnum.Unauthorized,
+    });
 
     render(<AuthForm />);
 
-    fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: mockEmail },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: mockPassword },
-    });
-
     await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: "Sign In" }));
+      await userEvent.type(screen.getByLabelText("Email"), mockEmail);
+      await userEvent.type(screen.getByLabelText("Password"), mockPassword);
+      userEvent.click(screen.getByRole("button", { name: "Sign In" }));
     });
 
     expect(
