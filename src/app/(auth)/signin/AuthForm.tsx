@@ -7,14 +7,18 @@ import {
   emailSchema,
   passwordSchema,
 } from "@/constants/textFieldValidationRules";
-import { signinAction } from "./signin.action";
+import {
+  signinWithCredentialsAction,
+  signinWithGoogleAction,
+} from "./signin.action";
 import useErrorMessage from "@/hooks/useErrorMessage";
 import { signinErrorMessages } from "./signinErrorMessages";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import GoogleIcon from "@mui/icons-material/Google";
 
 const formButtonStyles: SxProps = {
-  mt: 1,
+  my: 1,
 };
 
 const signinSchema = z.object({
@@ -34,7 +38,7 @@ export default function AuthForm() {
   const getErrorMessage = useErrorMessage(signinErrorMessages);
 
   const signin = async (data: ISingInRequest) => {
-    const result = await signinAction(data);
+    const result = await signinWithCredentialsAction(data);
     if (result?.errorCode) {
       setError("root.serverError", { type: result.errorCode.toString() });
     }
@@ -68,6 +72,14 @@ export default function AuthForm() {
         sx={formButtonStyles}
       >
         {isSubmitting ? "Signing in..." : "Sign In"}
+      </Button>
+      <Button
+        startIcon={<GoogleIcon />}
+        variant="outlined"
+        fullWidth
+        onClick={signinWithGoogleAction}
+      >
+        Sign in with Google
       </Button>
     </Box>
   );
