@@ -3,25 +3,32 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { authService } from "./services/authService";
 import { ROUTES } from "./config/routesConfig";
-import { ISingInResponse } from "./interfaces/auth.interfaces";
 import { JWT } from "next-auth/jwt";
+import type { AuthValidity, DecodedJWT, User, UserObject } from "next-auth";
+import { jwtDecode } from "jwt-decode";
+import { ErrorCodesEnum } from "./enums/errorCodes.enum";
 
-declare module "next-auth" {
-  export interface User {
-    id?: string;
-    data: ISingInResponse;
-  }
-}
+const publicRoutes = [ROUTES.SIGN_IN, ROUTES.SIGN_UP];
 
-declare module "next-auth/jwt" {
-  interface JWT {
-    user: {
-      data: ISingInResponse;
+async function refreshAccessToken(nextAuthJWTCookie: JWT): Promise<JWT> {
+  try {
+    const { accessToken } = await authService.getNewTokens(
+      nextAuthJWTCookie.data.tokens.refresh,
+    );
+    const { exp }: DecodedJWT = jwtDecode(accessToken);
+
+    nextAuthJWTCookie.data.validity.valid_until = exp;
+    nextAuthJWTCookie.data.tokens.access = accessToken;
+
+    return { ...nextAuthJWTCookie };
+  } catch (error) {
+    console.debug(error);
+    return {
+      ...nextAuthJWTCookie,
+      error: "RefreshAccessTokenError",
     };
   }
 }
-
-const publicRoutes = [ROUTES.SIGN_IN, ROUTES.SIGN_UP];
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
   session: {
@@ -37,10 +44,32 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           password: credentials.password as string,
         });
 
-        if (res.data) {
-          return { id: res.data.id, data: res.data };
+        if (!res.data) {
+          if (res.errorCode === ErrorCodesEnum.Unauthorized) {
+            throw new Error("Invalid credentials");
+          }
+          throw new Error("Server error");
         }
-        throw new Error("Invalid credentials.");
+
+        const accessDecoded: DecodedJWT = jwtDecode(res.data.accessToken);
+        const refreshDecoded: DecodedJWT = jwtDecode(res.data.refreshToken);
+        const user: UserObject = {
+          id: res.data.id,
+          role: res.data.role,
+        };
+        const validity: AuthValidity = {
+          valid_until: accessDecoded.exp,
+          refresh_until: refreshDecoded.exp,
+        };
+        return {
+          id: refreshDecoded.jti,
+          tokens: {
+            access: res.data.accessToken,
+            refresh: res.data.refreshToken,
+          },
+          user: user,
+          validity: validity,
+        } as User;
       },
     }),
     Google,
@@ -50,9 +79,11 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   },
   callbacks: {
     authorized: ({ auth, request: { nextUrl } }) => {
-      const isLoggedIn = !!auth?.user;
       const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-      if (isPublicRoute || isLoggedIn) {
+      if (isPublicRoute) {
+        return true;
+      }
+      if (auth && Date.now() < auth?.validity.refresh_until * 1000) {
         return true;
       }
       return false;
@@ -63,42 +94,49 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         if (!res.data || !profile) {
           return false;
         }
-        profile.id = res.data.id;
-        profile.accessToken = res.data.accessToken;
-        profile.refreshToken = res.data.refreshToken;
-        profile.role = res.data.role;
+        const accessDecoded: DecodedJWT = jwtDecode(res.data.accessToken);
+        const refreshDecoded: DecodedJWT = jwtDecode(res.data.refreshToken);
+        profile.data = {
+          id: refreshDecoded.jti,
+          tokens: {
+            access: res.data.accessToken,
+            refresh: res.data.refreshToken,
+          },
+          user: {
+            id: res.data.id,
+            role: res.data.role,
+          },
+          validity: {
+            valid_until: accessDecoded.exp,
+            refresh_until: refreshDecoded.exp,
+          },
+        };
       }
       return true;
     },
     async jwt({ token, user, profile }) {
-      if (token.user) {
-        if (new Date(token.user.data.accessToken.exp).getTime() < Date.now()) {
-          try {
-            const newToken = await authService.getNewTokens(
-              token.user.data.refreshToken.token,
-            );
-            token.user.data.accessToken = newToken.accessToken;
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
       if (profile) {
-        token.user = {
-          data: {
-            id: profile.id,
-            accessToken: profile.accessToken,
-            refreshToken: profile.refreshToken,
-            role: profile.role,
-          },
+        return {
+          ...token,
+          data: profile.data as User,
         };
       } else if (user) {
-        token.user = user;
+        return { ...token, data: user };
       }
-      return token;
+      if (Date.now() < token.data.validity.valid_until * 1000) {
+        return token;
+      }
+
+      if (Date.now() < token.data.validity.refresh_until * 1000) {
+        return await refreshAccessToken(token);
+      }
+      return { ...token, error: "RefreshTokenExpired" } as JWT;
     },
     async session({ session, token }) {
-      session.user = token.user;
+      session.user = token.data.user;
+      session.accessToken = token.data.tokens.access;
+      session.validity = token.data.validity;
+      session.error = token.error;
       return session;
     },
   },
