@@ -6,21 +6,12 @@ export interface ISingInRequest {
 }
 
 export interface ISingInResponse {
-  accessToken: {
-    token: string;
-    exp: string;
-  };
-  refreshToken: {
-    token: string;
-    maxAge: number;
-  };
+  accessToken: string;
+  refreshToken: string;
   id: string;
   role: Role;
 }
 
 export interface IRefreshTokenResponse {
-  accessToken: {
-    token: string;
-    exp: string;
-  };
+  accessToken: string;
 }

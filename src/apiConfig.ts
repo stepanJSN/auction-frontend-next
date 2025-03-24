@@ -14,7 +14,7 @@ const api = axios.create(options);
 const apiWithAuth = axios.create(options);
 
 apiWithAuth.interceptors.request.use(async (config) => {
-  const accessToken = (await auth())?.user?.data.accessToken.token;
+  const accessToken = (await auth())?.accessToken;
 
   if (config?.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

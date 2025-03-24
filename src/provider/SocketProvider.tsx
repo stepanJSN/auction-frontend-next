@@ -6,7 +6,7 @@ import { SERVER_URL } from "@/constants/envConstants";
 const SocketContext = createContext<Socket | null>(null);
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
-  const accessToken = useSession().data?.user?.data.accessToken.token;
+  const accessToken = useSession().data?.accessToken;
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
