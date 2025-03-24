@@ -12,7 +12,6 @@ export default function useNewMessageDisplay() {
 
   const handleNewMessage = useCallback(
     (messageData: IMessageEventPayload) => {
-      console.log(messageData);
       if (messageData.sender.id === id) return;
       enqueueSnackbar(`New message from ${messageData.sender.name}`, {
         variant: "info",

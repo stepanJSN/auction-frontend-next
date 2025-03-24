@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { authService } from "./services/authService";
 import { ROUTES } from "./config/routesConfig";
 import { ISingInResponse } from "./interfaces/auth.interfaces";
@@ -31,7 +32,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     Credentials({
       name: "Sign in",
       authorize: async (credentials) => {
-        const res = await authService.signIn({
+        const res = await authService.signInWithCredentials({
           email: credentials.email as string,
           password: credentials.password as string,
         });
@@ -42,6 +43,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         throw new Error("Invalid credentials.");
       },
     }),
+    Google,
   ],
   pages: {
     signIn: ROUTES.SIGN_IN,
@@ -55,11 +57,20 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       }
       return false;
     },
-    async session({ session, token }) {
-      session.user = token.user;
-      return session;
+    async signIn({ account, profile }) {
+      if (account?.provider === "google") {
+        const res = await authService.signInWithGoogle(account.id_token);
+        if (!res.data || !profile) {
+          return false;
+        }
+        profile.id = res.data.id;
+        profile.accessToken = res.data.accessToken;
+        profile.refreshToken = res.data.refreshToken;
+        profile.role = res.data.role;
+      }
+      return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (token.user) {
         if (new Date(token.user.data.accessToken.exp).getTime() < Date.now()) {
           try {
@@ -72,10 +83,23 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           }
         }
       }
-      if (user) {
+      if (profile) {
+        token.user = {
+          data: {
+            id: profile.id,
+            accessToken: profile.accessToken,
+            refreshToken: profile.refreshToken,
+            role: profile.role,
+          },
+        };
+      } else if (user) {
         token.user = user;
       }
       return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
     },
   },
 });
